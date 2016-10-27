@@ -1,0 +1,1 @@
+include ':app', ':taigi_dict_parser_app', ':taigi_dict_realm_model'

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/TaigiDict.iml" filepath="$PROJECT_DIR$/TaigiDict.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taigi_dict_parser_app/taigi_dict_parser_app.iml" filepath="$PROJECT_DIR$/taigi_dict_parser_app/taigi_dict_parser_app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/taigi_dict_realm_model/taigi_dict_realm_model.iml" filepath="$PROJECT_DIR$/taigi_dict_realm_model/taigi_dict_realm_model.iml" />
+    </modules>
+  </component>
+</project>

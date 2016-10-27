@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">臺語辭典</string>
+
+    <string name="search_hint">請輸入羅馬字來揣......</string>
+</resources>

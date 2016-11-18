@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.taccotap.taigidict.tailo.TailoDictFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="使用「羅馬字」搜尋時，可以輸入「台羅」或「白話字」，聲調必須使用「字體調號」，暫不支援數字調號。"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fragment_tailo_search_method"
+                android:textSize="28sp"/>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:checkedButton="@+id/lomajiRadioButton"
+                android:orientation="horizontal">
+
+                <RadioButton
+
+                    android:id="@+id/lomajiRadioButton"
+                    style="@style/Material.Drawable.RadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="羅馬字"
+                    android:textSize="24sp"/>
+
+                <RadioButton
+                    android:id="@+id/hoagiRadioButton"
+                    style="@style/Material.Drawable.RadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="對應華語"
+                    android:textSize="24sp"/>
+
+                <RadioButton
+                    android:id="@+id/keywordRadioButton"
+                    style="@style/Material.Drawable.RadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="全文"
+                    android:textSize="24sp"/>
+            </RadioGroup>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

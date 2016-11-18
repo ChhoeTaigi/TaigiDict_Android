@@ -1,13 +1,15 @@
-package com.taccotap.taigidict.tailo;
+package com.taccotap.taigidict.tailo.search;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.taccotap.taigidict.R;
-import com.taccotap.taigidict.databinding.ListitemTlSearchBinding;
+import com.taccotap.taigidict.databinding.ListitemTailoSearchBinding;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 
+import io.reactivex.processors.PublishProcessor;
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmBasedRecyclerViewAdapter;
@@ -16,8 +18,8 @@ import io.realm.RealmResults;
 import io.realm.RealmViewHolder;
 import io.realm.Sort;
 
-public class TlSearchAdapter extends RealmBasedRecyclerViewAdapter<TlTaigiWord, TlSearchAdapter.TlSearchViewHolder> {
-    private static final String TAG = TlSearchAdapter.class.getSimpleName();
+public class TailoSearchAdapter extends RealmBasedRecyclerViewAdapter<TlTaigiWord, TailoSearchAdapter.TailoSearchViewHolder> {
+    private static final String TAG = TailoSearchAdapter.class.getSimpleName();
 
     private final Context mContext;
     private final Realm mRealm;
@@ -29,30 +31,34 @@ public class TlSearchAdapter extends RealmBasedRecyclerViewAdapter<TlTaigiWord, 
     private String sortKey = filterKey;
     private String basePredicate = null;
 
-    public class TlSearchViewHolder extends RealmViewHolder {
-        public final ListitemTlSearchBinding dataBinding;
+    private final PublishProcessor<Integer> mOnClickSubject = PublishProcessor.create();
 
-        public TlSearchViewHolder(ListitemTlSearchBinding dataBinding) {
-            super(dataBinding.getRoot());
-            this.dataBinding = dataBinding;
-        }
-    }
-
-    public TlSearchAdapter(Context context, Realm realm) {
+    public TailoSearchAdapter(Context context, Realm realm) {
         super(context, null, false, false);
         mContext = context;
         mRealm = realm;
     }
 
-    @Override
-    public TlSearchViewHolder onCreateRealmViewHolder(ViewGroup viewGroup, int position) {
-        final ListitemTlSearchBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.listitem_tl_search, viewGroup, false);
-        return new TlSearchViewHolder(dataBinding);
+    public PublishProcessor<Integer> getItemClickProcessor() {
+        return mOnClickSubject;
     }
 
     @Override
-    public void onBindRealmViewHolder(TlSearchViewHolder holder, int position) {
+    public TailoSearchViewHolder onCreateRealmViewHolder(ViewGroup viewGroup, int position) {
+        final ListitemTailoSearchBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.listitem_tailo_search, viewGroup, false);
+        return new TailoSearchViewHolder(dataBinding);
+    }
+
+    @Override
+    public void onBindRealmViewHolder(TailoSearchViewHolder holder, final int position) {
         TlTaigiWord tlTaigiWord = realmResults.get(position);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnClickSubject.onNext(position);
+            }
+        });
 
         holder.dataBinding.setTaigiWord(tlTaigiWord);
         holder.dataBinding.executePendingBindings();
@@ -82,5 +88,18 @@ public class TlSearchAdapter extends RealmBasedRecyclerViewAdapter<TlTaigiWord, 
         }
 
         updateRealmResults(businesses);
+    }
+
+    public TlTaigiWord getItem(int position) {
+        return this.realmResults.get(position);
+    }
+
+    public class TailoSearchViewHolder extends RealmViewHolder {
+        public final ListitemTailoSearchBinding dataBinding;
+
+        public TailoSearchViewHolder(ListitemTailoSearchBinding dataBinding) {
+            super(dataBinding.getRoot());
+            this.dataBinding = dataBinding;
+        }
     }
 }

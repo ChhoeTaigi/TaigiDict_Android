@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 import com.taccotap.taigidict.R;
+import com.taccotap.taigidict.tailo.search.TailoSearchAdapter;
 import com.taccotap.taigidict.ui.ClearableEditText;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -25,7 +26,7 @@ public class TlSearchActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
-    private TlSearchAdapter mTlSearchAdapter;
+    private TailoSearchAdapter mTailoSearchAdapter;
 
     private Realm mRealm;
 
@@ -48,8 +49,8 @@ public class TlSearchActivity extends AppCompatActivity {
 
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mTlSearchAdapter = new TlSearchAdapter(this, mRealm);
-        mRecyclerView.setAdapter(mTlSearchAdapter);
+        mTailoSearchAdapter = new TailoSearchAdapter(this, mRealm);
+        mRecyclerView.setAdapter(mTailoSearchAdapter);
         mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).build());
     }
 
@@ -67,7 +68,7 @@ public class TlSearchActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mTlSearchAdapter.search(editable.toString());
+                mTailoSearchAdapter.search(editable.toString());
                 mRecyclerView.smoothScrollToPosition(0);
             }
         });

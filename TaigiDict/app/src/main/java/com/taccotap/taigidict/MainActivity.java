@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.taccotap.taigidict.tailo.TlSearchActivity;
+import com.taccotap.taigidict.portal.DictDrawerActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,7 +13,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(this, TlSearchActivity.class));
+        startActivity(new Intent(this, DictDrawerActivity.class));
+//        startActivity(new Intent(this, TlSearchActivity.class));
         finish();
     }
 }

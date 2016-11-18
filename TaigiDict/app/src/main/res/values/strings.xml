@@ -1,5 +1,18 @@
 <resources>
     <string name="app_name">臺語辭典</string>
+    <string name="app_desc">可離線查詢的臺語辭典APP</string>
 
+    <string name="nav_dict_tailo">教育部臺語辭典</string>
+    <string name="nav_group_more">更多</string>
+    <string name="nav_settings">設定</string>
+    <string name="nav_help">需要你的幫助</string>
+    <string name="nav_licenses">授權資料</string>
+
+    <string name="fragment_tailo_search_method">搜尋方式：</string>
     <string name="search_hint">請輸入羅馬字來揣......</string>
+
+    <string name="navigation_drawer_open">navigation drawer open</string>
+    <string name="navigation_drawer_close">navigation drawer close</string>
+
+
 </resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dict_tailo"
+            android:icon="@drawable/ic_menu_dict_tailo"
+            android:title="@string/nav_dict_tailo"/>
+    </group>
+
+    <item android:title="@string/nav_group_more">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings_green_900_48dp"
+                android:title="@string/nav_settings"/>
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_favorite_green_900_48dp"
+                android:title="@string/nav_help"/>
+            <item
+                android:id="@+id/nav_licenses"
+                android:icon="@drawable/ic_assignment_green_900_48dp"
+                android:title="@string/nav_licenses"/>
+        </menu>
+    </item>
+
+</menu>

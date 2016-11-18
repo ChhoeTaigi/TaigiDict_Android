@@ -35,18 +35,30 @@ dependencies {
 
     compile project(':taigi_dict_realm_model')
 
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:recyclerview-v7:25.0.0'
-    compile 'com.android.support:percent:25.0.0'
+    // Support library
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.android.support:percent:25.0.1'
+    compile 'com.android.support:support-v4:25.0.1'
 
+    // Realm
     compile 'com.github.eggheadgames:android-realm-asset-helper:2.0.0'
     compile 'io.realm:android-adapters:1.4.0'
     compile 'com.github.thorbenprimke:realm-searchview:0.9.6'
 
+    // Binding
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
+    // UI
     compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
-
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+
+    // Material design
+    compile 'com.github.rey5137:material:1.2.4'
+
+    // Rx
+    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 }

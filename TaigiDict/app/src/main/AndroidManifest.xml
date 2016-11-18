@@ -20,9 +20,10 @@
         </activity>
         <activity android:name=".tailo.TlSearchActivity">
         </activity>
-        <activity android:name=".maryknoll.MkSearchActivity">
+        <activity
+            android:name=".portal.DictDrawerActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
     </application>
 
 </manifest>

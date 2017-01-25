@@ -1,17 +1,24 @@
 <resources>
     <string name="app_name">臺語辭典</string>
-    <string name="app_desc">可離線查詢的臺語辭典APP</string>
+    <string name="app_desc">會使離線使用ê臺語辭典APP</string>
 
     <string name="nav_dict_tailo">教育部臺語辭典</string>
-    <string name="nav_group_more">更多</string>
+    <string name="nav_group_more">其他</string>
     <string name="nav_settings">設定</string>
-    <string name="nav_help">需要你的幫助</string>
+    <string name="nav_help">需要你ê幫贊</string>
     <string name="nav_licenses">授權資訊</string>
 
     <string name="fragment_tailo_search_method">請選一種揣ê方式：</string>
-    <string name="search_lomaji_hint">請輸入羅馬字來揣......</string>
-    <string name="search_hoagi_hint">請輸入華語ê漢字來揣......</string>
-    <string name="search_all_hint">請輸入關鍵字來揣......</string>
+    <string name="fragment_tailo_search_button_lomaji">臺語羅馬字</string>
+    <string name="fragment_tailo_search_button_hoagi">對應ê華語漢字</string>
+    <string name="fragment_tailo_search_button_all">全文關鍵字</string>
+
+    <string name="search_lomaji_hint">請輸入臺語羅馬字來揣......</string>
+    <string name="search_hoagi_hint">請輸入對應ê華語漢字來揣......</string>
+    <string name="search_all_hint">請輸入全文關鍵字來揣......</string>
+
+    <string name="toast_voice_need_network_connection">語音ê功能需要上網才會使聽。</string>
+    <string name="toast_sorry_cant_play">真歹勢，這馬無法度放。</string>
 
     <string name="navigation_drawer_open">navigation drawer open</string>
     <string name="navigation_drawer_close">navigation drawer close</string>

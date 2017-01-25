@@ -56,7 +56,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorAccent"
-                    android:text="羅馬字"
+                    android:text="@string/fragment_tailo_search_button_lomaji"
                     android:textAllCaps="false"
                     android:textColor="#fddd"
                     android:textSize="26sp"/>
@@ -68,7 +68,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorAccent"
-                    android:text="對應ê華語"
+                    android:text="@string/fragment_tailo_search_button_hoagi"
                     android:textAllCaps="false"
                     android:textColor="#fddd"
                     android:textSize="26sp"/>
@@ -80,7 +80,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorAccent"
-                    android:text="全文"
+                    android:text="@string/fragment_tailo_search_button_all"
                     android:textAllCaps="false"
                     android:textColor="#fddd"
                     android:textSize="26sp"/>

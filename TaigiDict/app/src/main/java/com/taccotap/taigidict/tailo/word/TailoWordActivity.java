@@ -162,7 +162,7 @@ public class TailoWordActivity extends AppCompatActivity {
     @OnClick(R.id.fab)
     void onClickFab() {
         if (!isNetworkAvailable()) {
-            Toast.makeText(TailoWordActivity.this, "語音功能需要網路連線才可播放。", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TailoWordActivity.this, R.string.toast_voice_need_network_connection, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -187,7 +187,7 @@ public class TailoWordActivity extends AppCompatActivity {
                 @Override
                 public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
                     mFloatingActionButton.setImageResource(R.drawable.ic_volume_up_grey_300_36dp);
-                    Toast.makeText(TailoWordActivity.this, "抱歉，無法播放。", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TailoWordActivity.this, R.string.toast_sorry_cant_play, Toast.LENGTH_SHORT).show();
                     return false;
                 }
             });

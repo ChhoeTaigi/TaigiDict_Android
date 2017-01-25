@@ -2,7 +2,9 @@
 <manifest package="com.taccotap.taigidict"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".TaigiDictApp"
@@ -18,11 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".tailo.TlSearchActivity">
-        </activity>
         <activity
             android:name=".portal.DictDrawerActivity"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".tailo.search.TailoSearchActivity"
+            android:label="@string/nav_dict_tailo"
+            android:theme="@style/AppTheme">
+        </activity>
+        <activity android:name=".tailo.word.TailoWordActivity">
         </activity>
     </application>
 

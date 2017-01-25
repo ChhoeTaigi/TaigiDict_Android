@@ -8,11 +8,35 @@ import io.realm.annotations.Required;
 public class TlHoagiWord extends RealmObject {
 
     @PrimaryKey
-    public int hoagiCode;
+    private int hoagiCode;
 
-    public int mainCode;
+    private int mainCode;
 
     @Index
     @Required
-    public String hoagiWord;
+    private String hoagiWord;
+
+    public int getHoagiCode() {
+        return hoagiCode;
+    }
+
+    public void setHoagiCode(int hoagiCode) {
+        this.hoagiCode = hoagiCode;
+    }
+
+    public int getMainCode() {
+        return mainCode;
+    }
+
+    public void setMainCode(int mainCode) {
+        this.mainCode = mainCode;
+    }
+
+    public String getHoagiWord() {
+        return hoagiWord;
+    }
+
+    public void setHoagiWord(String hoagiWord) {
+        this.hoagiWord = hoagiWord;
+    }
 }

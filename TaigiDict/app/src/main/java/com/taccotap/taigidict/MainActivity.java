@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         startActivity(new Intent(this, DictDrawerActivity.class));
-//        startActivity(new Intent(this, TlSearchActivity.class));
+//        startActivity(new Intent(this, TailoSearchActivity.class));
         finish();
     }
 }

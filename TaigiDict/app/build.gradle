@@ -3,7 +3,7 @@ apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.taccotap.taigidict"
@@ -36,11 +36,11 @@ dependencies {
     compile project(':taigi_dict_realm_model')
 
     // Support library
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:design:25.0.1'
-    compile 'com.android.support:recyclerview-v7:25.0.1'
-    compile 'com.android.support:percent:25.0.1'
-    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:percent:25.1.0'
+    compile 'com.android.support:support-v4:25.1.0'
 
     // Realm
     compile 'com.github.eggheadgames:android-realm-asset-helper:2.0.0'
@@ -49,7 +49,7 @@ dependencies {
 
     // Binding
     compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
     // UI
     compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
@@ -59,6 +59,12 @@ dependencies {
     compile 'com.github.rey5137:material:1.2.4'
 
     // Rx
-    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+//    compile 'io.reactivex:rxjava:1.2.5'
+//    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.4'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+//    compile "com.github.akarnokd:rxjava2-interop:0.8.3"
+
+    // Media Player
+    compile 'com.google.android.exoplayer:exoplayer:r2.1.1'
 }

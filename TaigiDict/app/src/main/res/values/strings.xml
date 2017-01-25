@@ -6,13 +6,14 @@
     <string name="nav_group_more">更多</string>
     <string name="nav_settings">設定</string>
     <string name="nav_help">需要你的幫助</string>
-    <string name="nav_licenses">授權資料</string>
+    <string name="nav_licenses">授權資訊</string>
 
-    <string name="fragment_tailo_search_method">搜尋方式：</string>
-    <string name="search_hint">請輸入羅馬字來揣......</string>
+    <string name="fragment_tailo_search_method">請選一種揣ê方式：</string>
+    <string name="search_lomaji_hint">請輸入羅馬字來揣......</string>
+    <string name="search_hoagi_hint">請輸入華語ê漢字來揣......</string>
+    <string name="search_all_hint">請輸入關鍵字來揣......</string>
 
     <string name="navigation_drawer_open">navigation drawer open</string>
     <string name="navigation_drawer_close">navigation drawer close</string>
-
 
 </resources>

@@ -69,9 +69,15 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
         }
     }
 
-    public void searchLomaji(String lomaji) {
+    public void searchLomaji(String lomaji, boolean isSearchEquals) {
         final RealmResults<TlTaigiWord> realmResults;
-        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class).contains("lomaji", lomaji, Case.INSENSITIVE);
+
+        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
+        if (!isSearchEquals) {
+            where = where.contains("lomaji", lomaji, Case.INSENSITIVE);
+        } else {
+            where = where.equalTo("lomaji", lomaji, Case.INSENSITIVE);
+        }
 
         realmResults = where.findAllSortedAsync("lomaji", Sort.ASCENDING);
 
@@ -83,9 +89,14 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
         });
     }
 
-    public void searchHoagi(String hoagi) {
+    public void searchHoagi(String hoagi, boolean isSearchEquals) {
         final RealmResults<TlTaigiWord> realmResults;
-        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class).contains("hoagiWords.hoagiWord", hoagi);
+        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
+        if (!isSearchEquals) {
+            where = where.contains("hoagiWords.hoagiWord", hoagi);
+        } else {
+            where = where.equalTo("hoagiWords.hoagiWord", hoagi);
+        }
 
         realmResults = where.findAllSortedAsync("mainCode", Sort.ASCENDING);
 
@@ -99,7 +110,9 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
 
     public void searchAll(String query) {
         final RealmResults<TlTaigiWord> realmResults;
-        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class).contains("lomaji", query, Case.INSENSITIVE)
+        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
+
+        where = where.contains("lomaji", query, Case.INSENSITIVE)
                 .or().contains("descriptions.description", query)
                 .or().contains("descriptions.exampleSentences.exampleSentenceHanji", query)
                 .or().contains("descriptions.exampleSentences.exampleSentenceLomaji", query)

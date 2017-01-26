@@ -7,6 +7,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.tailo.word.TailoWordActivity;
@@ -17,7 +21,7 @@ import butterknife.ButterKnife;
 import io.reactivex.functions.Consumer;
 import io.realm.Realm;
 
-public class TailoSearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class TailoSearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, CompoundButton.OnCheckedChangeListener {
 
     public static final String ACTION_SEARCH_LMJ = "ACTION_SEARCH_LMJ";
     public static final String ACTION_SEARCH_HOAGI = "ACTION_SEARCH_HOAGI";
@@ -33,9 +37,21 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
     @BindView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.searchRangeRadioGroup)
+    RadioGroup mSearchRangeRadioGroup;
+
+    @BindView(R.id.searchContainsRadioButton)
+    RadioButton mSearchContainsRadioButton;
+
+    @BindView(R.id.searchEqualRadioButton)
+    RadioButton mSearchEqualRadioButton;
+
     private TailoSearchAdapter mTailoSearchAdapter;
     private Realm mRealm;
     private int mCurrentSearchType = SEARCH_TYPE_LOMAJI;
+
+    private String mCurrentQueryString = "Tâi-gí";
+    private boolean mIsCurrentSearchEquals = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +62,10 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         handleIntent();
 
         mRealm = Realm.getDefaultInstance();
-//        initActionBar();
         initRecyclerView();
+        initRadioButton();
         initSearch();
     }
-
-//    private void initActionBar() {
-//        final ActionBar supportActionBar = getSupportActionBar();
-//        if (supportActionBar != null) {
-//            supportActionBar.setDisplayShowHomeEnabled(true);
-//            supportActionBar.setDisplayHomeAsUpEnabled(true);
-//        }
-//    }
 
     private void handleIntent() {
         // Get the intent, verify the action and get the query
@@ -65,10 +73,13 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
 
         if (ACTION_SEARCH_LMJ.equals(intent.getAction())) {
             mCurrentSearchType = 0;
+            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_lomaji) + ")");
         } else if (ACTION_SEARCH_HOAGI.equals(intent.getAction())) {
             mCurrentSearchType = 1;
+            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_hoagi) + ")");
         } else if (ACTION_SEARCH_ALL.equals(intent.getAction())) {
             mCurrentSearchType = 2;
+            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_all) + ")");
         }
     }
 
@@ -86,22 +97,40 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         });
     }
 
+    private void initRadioButton() {
+        mSearchContainsRadioButton.setOnCheckedChangeListener(this);
+        mSearchEqualRadioButton.setOnCheckedChangeListener(this);
+    }
+
     private void initSearch() {
         mSearchView.setIconifiedByDefault(false);
         mSearchView.requestFocus();
 
         if (mCurrentSearchType == SEARCH_TYPE_LOMAJI) {
             mSearchView.setQueryHint(getString(R.string.search_lomaji_hint));
+            mSearchRangeRadioGroup.setVisibility(View.VISIBLE);
         } else if (mCurrentSearchType == SEARCH_TYPE_HOAGI) {
             mSearchView.setQueryHint(getString(R.string.search_hoagi_hint));
+            mSearchRangeRadioGroup.setVisibility(View.VISIBLE);
         } else if (mCurrentSearchType == SEARCH_TYPE_ALL) {
             mSearchView.setQueryHint(getString(R.string.search_all_hint));
+            mSearchRangeRadioGroup.setVisibility(View.GONE);
         }
 
         mSearchView.setOnQueryTextListener(this);
     }
 
+    private void doSearch() {
+        doSearch(mCurrentQueryString, mIsCurrentSearchEquals);
+    }
+
     private void doSearch(String query) {
+        doSearch(query, mIsCurrentSearchEquals);
+    }
+
+    private void doSearch(String query, boolean isSearchEquals) {
+        mCurrentQueryString = query;
+
         query = query.trim();
 
         if (TextUtils.isEmpty(query)) {
@@ -109,9 +138,9 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         }
 
         if (mCurrentSearchType == SEARCH_TYPE_LOMAJI) {
-            mTailoSearchAdapter.searchLomaji(query);
+            mTailoSearchAdapter.searchLomaji(query, isSearchEquals);
         } else if (mCurrentSearchType == SEARCH_TYPE_HOAGI) {
-            mTailoSearchAdapter.searchHoagi(query);
+            mTailoSearchAdapter.searchHoagi(query, isSearchEquals);
         } else if (mCurrentSearchType == SEARCH_TYPE_ALL) {
             mTailoSearchAdapter.searchAll(query);
         }
@@ -137,5 +166,24 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
     public boolean onQueryTextChange(String newText) {
         doSearch(newText);
         return true;
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+        if (compoundButton == mSearchContainsRadioButton && checked) {
+            mSearchContainsRadioButton.setChecked(true);
+            mSearchEqualRadioButton.setChecked(false);
+
+            mIsCurrentSearchEquals = false;
+
+            doSearch();
+        } else if (compoundButton == mSearchEqualRadioButton && checked) {
+            mSearchContainsRadioButton.setChecked(false);
+            mSearchEqualRadioButton.setChecked(true);
+
+            mIsCurrentSearchEquals = true;
+
+            doSearch();
+        }
     }
 }

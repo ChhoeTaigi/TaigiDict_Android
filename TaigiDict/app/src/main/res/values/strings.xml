@@ -17,8 +17,11 @@
     <string name="search_hoagi_hint">請輸入對應ê華語漢字來揣......</string>
     <string name="search_all_hint">請輸入全文關鍵字來揣......</string>
 
+    <string name="tailo_search_contains_radiobutton_text">揣差不多ê</string>
+    <string name="tailo_search_equals_radiobutton_text">揣攏相仝ê</string>
+
     <string name="toast_voice_need_network_connection">語音ê功能需要上網才會使聽。</string>
-    <string name="toast_sorry_cant_play">真歹勢，這馬無法度放。</string>
+    <string name="toast_sorry_cant_play">真歹勢，這無法度聽。</string>
 
     <string name="navigation_drawer_open">navigation drawer open</string>
     <string name="navigation_drawer_close">navigation drawer close</string>

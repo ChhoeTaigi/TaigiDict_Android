@@ -24,8 +24,6 @@ import com.taccotap.taigidictmodel.tailo.TlDescription;
 import com.taccotap.taigidictmodel.tailo.TlExampleSentence;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -92,6 +90,11 @@ public class TailoWordActivity extends AppCompatActivity {
 
                 // bind word
                 mBinding.setTaigiWord(taigiWord);
+
+                // check voice avalibility (附錄皆無語音檔)
+                if (taigiWord.getWordPropertyCode() >= 11 && taigiWord.getWordPropertyCode() <= 22) {
+                    mFloatingActionButton.setVisibility(View.GONE);
+                }
 
                 // bind desc
                 final RealmList<TlDescription> descriptions = taigiWord.getDescriptions();
@@ -165,17 +168,12 @@ public class TailoWordActivity extends AppCompatActivity {
             Toast.makeText(TailoWordActivity.this, R.string.toast_voice_need_network_connection, Toast.LENGTH_SHORT).show();
             return;
         }
+        String voiceUrl = TailoTaigiWordAudioUrlHelper.getTaigiAudioUrl(mMainCode);
 
         if (mMediaPlayer == null) {
             mMediaPlayer = new MediaPlayer();
 
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            try {
-                mMediaPlayer.setDataSource(this, Uri.parse(TailoTaigiWordAudioUrlHelper.getTaigiAudioUrl(mMainCode)));
-                mMediaPlayer.prepare();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
             mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
@@ -186,16 +184,39 @@ public class TailoWordActivity extends AppCompatActivity {
             mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                    mFloatingActionButton.setImageResource(R.drawable.ic_volume_up_grey_300_36dp);
-                    Toast.makeText(TailoWordActivity.this, R.string.toast_sorry_cant_play, Toast.LENGTH_SHORT).show();
+                    toastCantPlayVoiceMessage();
                     return false;
                 }
             });
-        }
+            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    startPlayVoice();
+                }
+            });
 
-        if (mMediaPlayer.isPlaying()) {
-            mMediaPlayer.seekTo(0);
+            try {
+                mMediaPlayer.setDataSource(this, Uri.parse(voiceUrl));
+                mMediaPlayer.prepareAsync();
+            } catch (Exception e) {
+                e.printStackTrace();
+                toastCantPlayVoiceMessage();
+            }
+        } else {
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.seekTo(0);
+            }
+
+            startPlayVoice();
         }
+    }
+
+    private void toastCantPlayVoiceMessage() {
+        mFloatingActionButton.setImageResource(R.drawable.ic_volume_up_grey_300_36dp);
+        Toast.makeText(TailoWordActivity.this, R.string.toast_sorry_cant_play, Toast.LENGTH_SHORT).show();
+    }
+
+    private void startPlayVoice() {
         mFloatingActionButton.setImageResource(R.drawable.ic_volume_up_light_green_a100_36dp);
         mMediaPlayer.start();
     }

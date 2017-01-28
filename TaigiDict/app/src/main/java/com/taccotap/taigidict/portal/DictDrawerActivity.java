@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.mikepenz.aboutlibraries.LibsBuilder;
+import com.mikepenz.aboutlibraries.ui.LibsSupportFragment;
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.tailo.TailoDictFragment;
 
@@ -99,6 +101,33 @@ public class DictDrawerActivity extends AppCompatActivity implements NavigationV
                     .commit();
             if (supportActionBar != null) {
                 supportActionBar.setTitle(R.string.nav_dict_tailo);
+            }
+        } else if (id == R.id.nav_help) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_dicts, HelpFragment.newInstance())
+                    .commit();
+            if (supportActionBar != null) {
+                supportActionBar.setTitle(R.string.nav_help);
+            }
+        } else if (id == R.id.nav_about) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_dicts, AboutFragment.newInstance())
+                    .commit();
+            if (supportActionBar != null) {
+                supportActionBar.setTitle(R.string.nav_about);
+            }
+        } else if (id == R.id.nav_licenses) {
+            LibsSupportFragment fragment = new LibsBuilder()
+                    .withAutoDetect(true)
+                    .withLicenseShown(true)
+                    .withVersionShown(true)
+                    .supportFragment();
+
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_dicts, fragment)
+                    .commit();
+            if (supportActionBar != null) {
+                supportActionBar.setTitle(R.string.nav_licenses);
             }
         }
     }

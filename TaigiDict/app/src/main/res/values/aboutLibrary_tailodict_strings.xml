@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="define_tailodict"></string>
+    <!-- Author section -->
+    <string name="library_tailodict_author">臺灣教育部</string>
+    <string name="library_tailodict_authorWebsite">http://twblg.dict.edu.tw/holodict_new/index.html</string>
+    <!-- Library section -->
+    <string name="library_tailodict_libraryName">臺灣閩南語常用詞辭典</string>
+    <string name="library_tailodict_libraryDescription"><![CDATA[<b>臺灣閩南語常用詞辭典</b> 授權聲明：<br><br>
+        臺灣閩南語常用詞辭典及相關資料皆為教育部國語推行委員會編訂，所含相關資料之所有權歸教育部所有。<br><br>
+        本辭典之「文字內容」部分以 創用CC姓名標示-禁止改作 3.0 臺灣 授權條款釋出。]]></string>
+    <string name="library_tailodict_libraryWebsite">http://twblg.dict.edu.tw/holodict_new/index.html</string>
+    <string name="library_tailodict_libraryVersion">20160602</string>
+    <!-- OpenSource section -->
+    <string name="library_tailodict_isOpenSource">false</string>
+    <string name="library_tailodict_repositoryLink">http://twblg.dict.edu.tw/holodict_new/index.html</string>
+    <!-- ClassPath for autoDetect section -->
+    <string name="library_tailodict_classPath">com.taccotap.taigidictmodel.tailo</string>
+    <!-- License section -->
+    <string name="library_tailodict_licenseVersion">CC BY-ND 3.0 TW</string>
+    <string name="library_tailodict_licenseLink">https://creativecommons.org/licenses/by-nd/3.0/tw/</string>
+    <string name="library_tailodict_licenseContent">姓名標示-禁止改作 3.0 台灣</string>
+    <!-- Custom variables section -->
+</resources>

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.databinding.ListitemTailoSearchBinding;
+import com.taccotap.taigidict.tailo.utils.TailoConstants;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 
 import io.reactivex.processors.PublishProcessor;
@@ -27,7 +28,7 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
     private final PublishProcessor<Integer> mOnClickSubject = PublishProcessor.create();
 
     public TailoSearchAdapter(Context context, Realm realm) {
-        super(context, realm.where(TlTaigiWord.class).contains("lomaji", "Tâi-gí").findAllAsync(), false);
+        super(context, realm.where(TlTaigiWord.class).contains("lomaji", TailoConstants.DEFAULT_QUERY_STRING).findAllAsync(), false);
         mRealm = realm;
     }
 

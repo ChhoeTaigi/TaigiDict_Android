@@ -1,11 +1,8 @@
 package com.taccotap.taigidict.tailo.word;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +17,7 @@ import android.widget.Toast;
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.databinding.ActivityTailoWordBinding;
 import com.taccotap.taigidict.tailo.utils.TailoTaigiWordAudioUrlHelper;
+import com.taccotap.taigidict.utils.NetworkUtils;
 import com.taccotap.taigidictmodel.tailo.TlDescription;
 import com.taccotap.taigidictmodel.tailo.TlExampleSentence;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
@@ -164,7 +162,7 @@ public class TailoWordActivity extends AppCompatActivity {
 
     @OnClick(R.id.fab)
     void onClickFab() {
-        if (!isNetworkAvailable()) {
+        if (!NetworkUtils.isNetworkAvailable(this)) {
             Toast.makeText(TailoWordActivity.this, R.string.toast_voice_need_network_connection, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -243,10 +241,4 @@ public class TailoWordActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 }

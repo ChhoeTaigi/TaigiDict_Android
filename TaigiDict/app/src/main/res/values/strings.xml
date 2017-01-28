@@ -6,9 +6,10 @@
     <string name="nav_group_more">其他</string>
     <string name="nav_settings">設定</string>
     <string name="nav_help">需要你ê幫贊</string>
+    <string name="nav_about">關於</string>
     <string name="nav_licenses">授權資訊</string>
 
-    <string name="fragment_tailo_search_method">請選一種揣ê方式：</string>
+    <string name="fragment_tailo_search_method">請選一種揣 ê 方式：</string>
     <string name="fragment_tailo_search_button_lomaji">臺語羅馬字</string>
     <string name="fragment_tailo_search_button_hoagi">對應ê華語漢字</string>
     <string name="fragment_tailo_search_button_all">全文關鍵字</string>
@@ -23,7 +24,28 @@
     <string name="toast_voice_need_network_connection">語音ê功能需要上網才會使聽。</string>
     <string name="toast_sorry_cant_play">真歹勢，這無法度聽。</string>
 
+    <string name="help_fragment_title_card_text">多謝你 ê 使用，若是有啥物問題，請你對下跤 ê 方式來和我反應。\n\n若是你會使來幫贊，不管是建議 kap 指教，抑是提供其他 ê 辭典資料，想欲鬥出力出錢，攏誠歡迎，請和我連絡。</string>
+    <string name="help_fragment_feedback_card_title_text">建議 kap 指教</string>
+    <string name="help_fragment_help_card_title_text">需要你 ê 幫贊</string>
+    <string name="help_fragment_facebook_group_item_text">面冊 ê 社團</string>
+    <string name="url_taigidictapp_facebook_group">https://www.facebook.com/groups/TaigiDictApp/</string>
+    <string name="help_fragment_email_me_item_text">寫批予我</string>
+    <string name="feedback_email">taccotap@gmail.com</string>
+    <string name="help_fragment_email_me_mail_title">臺語辭典APP ê 建議 kap 指教</string>
+    <string name="help_fragment_rate_app_item_text">若是袂䆀用，請鬥拍 5 粒星！</string>
+    <string name="url_taigidictapp_github_repo">https://github.com/shiami/AndroidTaigiDict</string>
+
+    <string name="about_fragment_version_item_text">版本</string>
+    <string name="about_fragment_author_card_title_text">作者</string>
+    <string name="about_fragment_author_item_text">Hê-bí</string>
+    <string name="about_fragment_author_item_subtext">Tánn-káu, Tâi-oân</string>
+
     <string name="navigation_drawer_open">navigation drawer open</string>
     <string name="navigation_drawer_close">navigation drawer close</string>
+
+    <!-- AboutLibraries -->
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">false</string>
+    <!--<string name="aboutLibraries_description_text">臺語辭典 - 會使離線使用ê臺語辭典APP</string>-->
 
 </resources>

@@ -178,7 +178,7 @@
                                 android:textSize="15sp"/>
 
                             <TextView
-                                android:id="@+id/descriptionTextView"
+                                android:id="@+id/wordPropertyTextView"
                                 fontPath="fonts/twu3.ttf"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

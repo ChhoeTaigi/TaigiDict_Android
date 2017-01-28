@@ -19,6 +19,10 @@
                 android:icon="@drawable/ic_favorite_green_900_48dp"
                 android:title="@string/nav_help"/>
             <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info_green_900_48dp"
+                android:title="@string/nav_about"/>
+            <item
                 android:id="@+id/nav_licenses"
                 android:icon="@drawable/ic_assignment_green_900_48dp"
                 android:title="@string/nav_licenses"/>

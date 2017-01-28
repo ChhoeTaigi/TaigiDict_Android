@@ -15,3 +15,11 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# Android-Iconics: https://github.com/mikepenz/Android-Iconics
+# AboutLibraries: https://github.com/mikepenz/AboutLibraries
+-keep class .R
+-keep class **.R$* {
+    <fields>;
+}
+

@@ -31,6 +31,9 @@
         </activity>
         <activity android:name=".tailo.word.TailoWordActivity">
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="56f6c59e6d2df1c57f30da94fa521346a381b383" />
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.taccotap.taigidict.R;
+import com.taccotap.taigidict.tailo.utils.TailoConstants;
 import com.taccotap.taigidict.tailo.word.TailoWordActivity;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 
@@ -50,7 +51,7 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
     private Realm mRealm;
     private int mCurrentSearchType = SEARCH_TYPE_LOMAJI;
 
-    private String mCurrentQueryString = "Tâi-gí";
+    private String mCurrentQueryString = TailoConstants.DEFAULT_QUERY_STRING;
     private boolean mIsCurrentSearchEquals = false;
 
     @Override
@@ -134,7 +135,7 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         query = query.trim();
 
         if (TextUtils.isEmpty(query)) {
-            query = "Tâi-gí";
+            query = TailoConstants.DEFAULT_QUERY_STRING;
         }
 
         if (mCurrentSearchType == SEARCH_TYPE_LOMAJI) {

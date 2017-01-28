@@ -2,10 +2,12 @@ package com.taccotap.taigidict;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.realmassethelper.IRealmAssetHelperStorageListener;
 import com.eggheadgames.realmassethelper.RealmAssetHelper;
 import com.eggheadgames.realmassethelper.RealmAssetHelperStatus;
 
+import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -18,6 +20,7 @@ public class TaigiDictApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         initRealm();
         initCalligraphy();

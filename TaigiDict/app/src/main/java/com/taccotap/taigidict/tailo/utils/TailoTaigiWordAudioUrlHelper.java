@@ -1,5 +1,7 @@
 package com.taccotap.taigidict.tailo.utils;
 
+import java.util.Locale;
+
 public class TailoTaigiWordAudioUrlHelper {
 
     public static String getTaigiAudioUrl(int mainCode) {
@@ -7,7 +9,7 @@ public class TailoTaigiWordAudioUrlHelper {
 
         stringBuilder.append(TailoConstants.URL_AUDIO_FILE_PREFIX);
 
-        String leadingZeroMainCodeString = String.format("%05d", mainCode);
+        String leadingZeroMainCodeString = String.format(Locale.ENGLISH, "%05d", mainCode);
         stringBuilder.append(leadingZeroMainCodeString);
 
         stringBuilder.append(TailoConstants.URL_AUDIO_FILE_POSTFIX);

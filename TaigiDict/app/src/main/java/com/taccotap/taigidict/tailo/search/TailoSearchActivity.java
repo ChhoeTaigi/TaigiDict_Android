@@ -168,17 +168,19 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
 
     @Override
     public boolean onQueryTextChange(String query) {
-        query = query.trim();
+        String handledQueryString = query.trim();
 
-        String fixedLomaji = LomajiUnicodeUtils.fixTwoCharWord(query);
+        if (mCurrentSearchType == SEARCH_TYPE_LOMAJI) {
+            String fixedLomaji = LomajiUnicodeUtils.fixTwoCharWord(query);
 
-        if (BuildConfig.DEBUG_LOG) {
-            logInputUnicode(fixedLomaji);
+            if (BuildConfig.DEBUG_LOG) {
+                logInputUnicode(fixedLomaji);
+            }
+
+            handledQueryString = Poj2TailoUtils.poj2tailo(fixedLomaji);
         }
 
-        String tailo = Poj2TailoUtils.poj2tailo(fixedLomaji);
-
-        doSearch(tailo);
+        doSearch(handledQueryString);
 
         return true;
     }

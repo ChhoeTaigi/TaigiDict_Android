@@ -114,6 +114,8 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
         RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
 
         where = where.contains("lomaji", query, Case.INSENSITIVE)
+                .or().contains("hanji", query, Case.INSENSITIVE)
+                .or().contains("hoagiWords.hoagiWord", query)
                 .or().contains("descriptions.description", query)
                 .or().contains("descriptions.exampleSentences.exampleSentenceHanji", query)
                 .or().contains("descriptions.exampleSentences.exampleSentenceLomaji", query)

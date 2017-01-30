@@ -52,6 +52,8 @@ public class TailoWordActivity extends AppCompatActivity {
     private Realm mRealm;
     private ActivityTailoWordBinding mBinding;
     private MediaPlayer mMediaPlayer;
+    private TlTaigiWord mTaigiWord;
+    private String mVoiceUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,22 +82,28 @@ public class TailoWordActivity extends AppCompatActivity {
         mRealm = Realm.getDefaultInstance();
 
         // bind word, description
-        final TlTaigiWord taigiWord = mRealm.where(TlTaigiWord.class).equalTo("mainCode", mMainCode).findFirstAsync();
-        taigiWord.addChangeListener(new RealmChangeListener<RealmModel>() {
+        mTaigiWord = mRealm.where(TlTaigiWord.class).equalTo("mainCode", mMainCode).findFirstAsync();
+        mTaigiWord.addChangeListener(new RealmChangeListener<RealmModel>() {
             @Override
             public void onChange(RealmModel element) {
-                Log.i(TAG, "lomaji=" + taigiWord.getLomaji());
+                Log.i(TAG, "lomaji=" + mTaigiWord.getLomaji());
 
                 // bind word
-                mBinding.setTaigiWord(taigiWord);
+                mBinding.setTaigiWord(mTaigiWord);
 
-                // check voice avalibility (附錄皆無語音檔)
-                if (taigiWord.getWordPropertyCode() >= 11 && taigiWord.getWordPropertyCode() <= 22) {
+                if (mTaigiWord.getWordPropertyCode() == 12) {
+                    mVoiceUrl = TailoTaigiWordAudioUrlHelper.getTaigiWailaiAudioUrl(mMainCode);
+                } else {
+                    mVoiceUrl = TailoTaigiWordAudioUrlHelper.getTaigiAudioUrl(mMainCode);
+                }
+
+                // check voice avalibility (附錄(11~22)除了外來語(12)，皆無語音檔)
+                if (mTaigiWord.getWordPropertyCode() >= 11 && mTaigiWord.getWordPropertyCode() <= 22 && mTaigiWord.getWordPropertyCode() != 12) {
                     mFloatingActionButton.setVisibility(View.GONE);
                 }
 
                 // bind desc
-                final RealmList<TlDescription> descriptions = taigiWord.getDescriptions();
+                final RealmList<TlDescription> descriptions = mTaigiWord.getDescriptions();
                 final int descriptionsCount = descriptions.size();
                 if (descriptionsCount > 0) {
                     StringBuilder stringBuilder = new StringBuilder();
@@ -152,7 +160,7 @@ public class TailoWordActivity extends AppCompatActivity {
                 }
 
                 // bind word property
-                final int wordPropertyCode = taigiWord.getWordPropertyCode();
+                final int wordPropertyCode = mTaigiWord.getWordPropertyCode();
                 if (wordPropertyCode <= 2) {
                     mWordPropertyLayout.setVisibility(View.GONE);
                 }
@@ -166,7 +174,12 @@ public class TailoWordActivity extends AppCompatActivity {
             Toast.makeText(TailoWordActivity.this, R.string.toast_voice_need_network_connection, Toast.LENGTH_SHORT).show();
             return;
         }
-        String voiceUrl = TailoTaigiWordAudioUrlHelper.getTaigiAudioUrl(mMainCode);
+
+        if (mVoiceUrl == null) {
+            // TODO handle data state
+            Log.e(TAG, "Data not ready yet.");
+            return;
+        }
 
         if (mMediaPlayer == null) {
             mMediaPlayer = new MediaPlayer();
@@ -194,7 +207,7 @@ public class TailoWordActivity extends AppCompatActivity {
             });
 
             try {
-                mMediaPlayer.setDataSource(this, Uri.parse(voiceUrl));
+                mMediaPlayer.setDataSource(this, Uri.parse(mVoiceUrl));
                 mMediaPlayer.prepareAsync();
             } catch (Exception e) {
                 e.printStackTrace();

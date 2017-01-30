@@ -16,4 +16,17 @@ public class TailoTaigiWordAudioUrlHelper {
 
         return stringBuilder.toString();
     }
+
+    public static String getTaigiWailaiAudioUrl(int mainCode) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(TailoConstants.URL_AUDIO_FILE_PREFIX + TailoConstants.URL_NODE_WAILAI);
+
+        String leadingZeroMainCodeString = String.format(Locale.ENGLISH, "%d", mainCode - 31000);
+        stringBuilder.append(leadingZeroMainCodeString);
+
+        stringBuilder.append(TailoConstants.URL_AUDIO_FILE_POSTFIX);
+
+        return stringBuilder.toString();
+    }
 }

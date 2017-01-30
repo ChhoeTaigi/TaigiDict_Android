@@ -7,14 +7,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.taccotap.taigidict.BuildConfig;
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.tailo.utils.TailoConstants;
 import com.taccotap.taigidict.tailo.word.TailoWordActivity;
+import com.taccotap.taigidict.utils.LomajiUnicodeUtils;
+import com.taccotap.taigidict.utils.Poj2TailoUtils;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 
 import butterknife.BindView;
@@ -23,6 +27,7 @@ import io.reactivex.functions.Consumer;
 import io.realm.Realm;
 
 public class TailoSearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, CompoundButton.OnCheckedChangeListener {
+    private static final String TAG = TailoSearchActivity.class.getSimpleName();
 
     public static final String ACTION_SEARCH_LMJ = "ACTION_SEARCH_LMJ";
     public static final String ACTION_SEARCH_HOAGI = "ACTION_SEARCH_HOAGI";
@@ -132,8 +137,6 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
     private void doSearch(String query, boolean isSearchEquals) {
         mCurrentQueryString = query;
 
-        query = query.trim();
-
         if (TextUtils.isEmpty(query)) {
             query = TailoConstants.DEFAULT_QUERY_STRING;
         }
@@ -164,9 +167,32 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
     }
 
     @Override
-    public boolean onQueryTextChange(String newText) {
-        doSearch(newText);
+    public boolean onQueryTextChange(String query) {
+        query = query.trim();
+
+        String fixedLomaji = LomajiUnicodeUtils.fixTwoCharWord(query);
+
+        if (BuildConfig.DEBUG_LOG) {
+            logInputUnicode(fixedLomaji);
+        }
+
+        String tailo = Poj2TailoUtils.poj2tailo(fixedLomaji);
+
+        doSearch(tailo);
+
         return true;
+    }
+
+    private void logInputUnicode(String query) {
+        int count = query.length();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            final char c = query.charAt(i);
+            String stringUnicode = Integer.toHexString((int) c);
+            stringBuilder.append(stringUnicode + " ");
+        }
+
+        Log.d(TAG, "Input: " + query + ", Unicode: " + stringBuilder.toString());
     }
 
     @Override

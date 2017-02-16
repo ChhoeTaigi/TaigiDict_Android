@@ -17,7 +17,7 @@ public class TailoTaigiWordAudioUrlHelper {
         return stringBuilder.toString();
     }
 
-    public static String getTaigiWailaiAudioUrl(int mainCode) {
+    public static String getTaigiGoaLaiAudioUrl(int mainCode) {
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(TailoConstants.URL_AUDIO_FILE_PREFIX + TailoConstants.URL_NODE_WAILAI);

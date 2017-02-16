@@ -16,6 +16,14 @@ public class Poj2TailoUtils {
                 .replaceAll("E\u030dk", "I\u030dk") // E̍k -> I̍k
                 .replaceAll("eng", "ing") // eng -> ing
                 .replaceAll("Eng", "Ing") // Eng -> Ing
+                .replaceAll("\u00e9ng", "\u00edng") // éng -> íng
+                .replaceAll("\u00c9ng", "\u00cdng") // Éng -> Íng
+                .replaceAll("\u00e8ng", "\u00ecng") // èng -> ìng
+                .replaceAll("\u00c8ng", "\u00ccng") // Èng -> Ìng
+                .replaceAll("\u00eang", "\u00eeng") // êng -> îng
+                .replaceAll("\u00cang", "\u00ceng") // Êng -> Îng
+                .replaceAll("\u0113ng", "\u012bng") // ēng -> īng
+                .replaceAll("\u0102ng", "\u012ang") // Ēng -> Īng
                 .replaceAll("e\u030dng", "i\u030dng") // e̍ng -> i̍ng
                 .replaceAll("E\u030dng", "I\u030dng"); // E̍ng -> I̍ng
         return tailo;

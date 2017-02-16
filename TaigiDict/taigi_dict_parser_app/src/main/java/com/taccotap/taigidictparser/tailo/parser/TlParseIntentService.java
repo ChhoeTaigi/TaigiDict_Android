@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.taccotap.taigidictmodel.tailo.TlAnotherPronounce;
 import com.taccotap.taigidictmodel.tailo.TlAntonym;
@@ -22,7 +23,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import io.realm.Realm;
@@ -68,9 +68,9 @@ public class TlParseIntentService extends IntentService {
         parseDictDescription();
         parseDictDescriptionPartOfSpeech();
 
-        parseAnotherPronounce();
-
         parseExampleSentence();
+
+        parseAnotherPronounce();
 
         parseThesaurus();
         parseAnyonym();
@@ -196,18 +196,18 @@ public class TlParseIntentService extends IntentService {
             });
 
             // add to TaigiWord
-            final HashMap<Integer, String> wordPropertyHashMap = new HashMap<>();
+            final SparseArray<String> wordPropertySparseArray = new SparseArray<>();
             for (final TlTaigiWordProperty wordProperty : taigiWordProperties) {
-                wordPropertyHashMap.put(wordProperty.getPropertyCode(), wordProperty.getPropertyText());
+                wordPropertySparseArray.put(wordProperty.getPropertyCode(), wordProperty.getPropertyText());
             }
             mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     final RealmResults<TlTaigiWord> taigiWords = mRealm.where(TlTaigiWord.class).findAll();
                     for (final TlTaigiWord taigiWord : taigiWords) {
-                        final String wordPropertyText = wordPropertyHashMap.get(taigiWord.getWordPropertyCode());
+                        final String wordPropertyText = wordPropertySparseArray.get(taigiWord.getWordPropertyCode());
                         if (wordPropertyText == null) {
-                            Log.e(TAG, "TlTaigiWord for TlTaigiWordProperty's wordPropertyText = " + wordPropertyText + " not found.");
+                            Log.e(TAG, "TlTaigiWord for TlTaigiWordProperty's wordPropertyText with propertyCode = " + taigiWord.getWordPropertyCode() + " not found.");
                             continue;
                         }
                         taigiWord.setWordPropertyText(wordPropertyText);
@@ -276,16 +276,16 @@ public class TlParseIntentService extends IntentService {
 
             // add to TaigiWord
             final RealmResults<TlTaigiWord> taigiWords = mRealm.where(TlTaigiWord.class).findAll();
-            final HashMap<Integer, TlTaigiWord> taigiWordsHashMap = new HashMap<>();
+            final SparseArray<TlTaigiWord> taigiWordSparseArray = new SparseArray<>();
             for (final TlTaigiWord taigiWord : taigiWords) {
-                taigiWordsHashMap.put(taigiWord.getMainCode(), taigiWord);
+                taigiWordSparseArray.put(taigiWord.getMainCode(), taigiWord);
             }
             mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     for (final TlHoagiWord hoagiWord : hoagiWords) {
                         final int mainCode = hoagiWord.getMainCode();
-                        final TlTaigiWord foundTaigiWord = taigiWordsHashMap.get(mainCode);
+                        final TlTaigiWord foundTaigiWord = taigiWordSparseArray.get(mainCode);
                         if (foundTaigiWord == null) {
                             Log.e(TAG, "TlTaigiWord for TlHoagiWord's maincode = " + mainCode + " not found.");
                             continue;
@@ -364,16 +364,16 @@ public class TlParseIntentService extends IntentService {
 
             // add to TaigiWord
             final RealmResults<TlTaigiWord> taigiWords = mRealm.where(TlTaigiWord.class).findAll();
-            final HashMap<Integer, TlTaigiWord> taigiWordsHashMap = new HashMap<>();
+            final SparseArray<TlTaigiWord> taigiWordSparseArray = new SparseArray<>();
             for (final TlTaigiWord taigiWord : taigiWords) {
-                taigiWordsHashMap.put(taigiWord.getMainCode(), taigiWord);
+                taigiWordSparseArray.put(taigiWord.getMainCode(), taigiWord);
             }
             mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     for (final TlDescription description : descriptions) {
                         final int mainCode = description.getMainCode();
-                        final TlTaigiWord foundTaigiWord = taigiWordsHashMap.get(mainCode);
+                        final TlTaigiWord foundTaigiWord = taigiWordSparseArray.get(mainCode);
                         if (foundTaigiWord == null) {
                             Log.e(TAG, "TlTaigiWord for TlDescription's maincode = " + mainCode + " not found.");
                             continue;
@@ -387,6 +387,7 @@ public class TlParseIntentService extends IntentService {
         Log.d(TAG, "finish: parseDictDescription()");
     }
 
+    // 詞性
     private void parseDictDescriptionPartOfSpeech() {
         Log.d(TAG, "start: parseDictDescriptionPartOfSpeech()");
 
@@ -439,18 +440,18 @@ public class TlParseIntentService extends IntentService {
             });
 
             // add to TlDescription
-            final HashMap<Integer, String> partOfSpeechHashMap = new HashMap<>();
+            final SparseArray<String> partOfSpeechSparseArray = new SparseArray<>();
             for (final TlDescriptionPartOfSpeech partOfSpeech : descriptionPartOfSpeeches) {
-                partOfSpeechHashMap.put(partOfSpeech.getPartOfSpeechCode(), partOfSpeech.getPartOfSpeechText());
+                partOfSpeechSparseArray.put(partOfSpeech.getPartOfSpeechCode(), partOfSpeech.getPartOfSpeechText());
             }
             mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     final RealmResults<TlDescription> descriptions = mRealm.where(TlDescription.class).findAll();
                     for (final TlDescription description : descriptions) {
-                        final String partOfSpeechText = partOfSpeechHashMap.get(description.getPartOfSpeechCode());
+                        final String partOfSpeechText = partOfSpeechSparseArray.get(description.getPartOfSpeechCode());
                         if (partOfSpeechText == null) {
-                            Log.e(TAG, "TlDescription for TlDescriptionPartOfSpeech's partOfSpeechText = " + partOfSpeechText + " not found.");
+                            Log.e(TAG, "TlDescription for TlDescriptionPartOfSpeech's partOfSpeechText with PartOfSpeechCode = " + description.getPartOfSpeechCode() + " not found.");
                             continue;
                         }
                         description.setPartOfSpeech(partOfSpeechText);
@@ -592,21 +593,21 @@ public class TlParseIntentService extends IntentService {
 
             // add to TlDescription
             final RealmResults<TlTaigiWord> taigiWords = mRealm.where(TlTaigiWord.class).findAll();
-            final HashMap<Integer, TlTaigiWord> taigiWordsHashMap = new HashMap<>();
+            final SparseArray<TlTaigiWord> taigiWordSparseArray = new SparseArray<>();
             for (final TlTaigiWord taigiWord : taigiWords) {
-                taigiWordsHashMap.put(taigiWord.getMainCode(), taigiWord);
+                taigiWordSparseArray.put(taigiWord.getMainCode(), taigiWord);
             }
             final RealmResults<TlDescription> descriptions = mRealm.where(TlDescription.class).findAll();
-            final HashMap<Integer, TlDescription> descriptionHashMap = new HashMap<>();
+            final SparseArray<TlDescription> descriptionSparseArray = new SparseArray<>();
             for (final TlDescription description : descriptions) {
-                descriptionHashMap.put(description.getMainCode(), description);
+                descriptionSparseArray.put(description.getMainCode(), description);
             }
             mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     for (final TlExampleSentence currentExampleSentence : exampleSentences) {
                         final int mainCode = currentExampleSentence.getMainCode();
-                        final TlTaigiWord foundTaigiWord = taigiWordsHashMap.get(mainCode);
+                        final TlTaigiWord foundTaigiWord = taigiWordSparseArray.get(mainCode);
                         if (foundTaigiWord == null) {
                             Log.e(TAG, "TlTaigiWord for TlExampleSentence's maincode = " + mainCode + " not found.");
                             continue;

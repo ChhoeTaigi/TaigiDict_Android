@@ -53,22 +53,26 @@
                 android:paddingTop="30dp">
 
                 <LinearLayout
+                    android:id="@+id/title1Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/titleTextView1"
                         fontPath="fonts/HanaMinB.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/textview_border_light"
                         android:lineSpacingMultiplier="1.3"
                         android:padding="2dp"
-                        android:text="台羅"
+                        android:text="臺羅"
                         android:textColor="#faaa"
                         android:textSize="20sp"/>
 
                     <TextView
+                        android:id="@+id/titleContentTextView1"
                         fontPath="fonts/twu3.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -81,15 +85,16 @@
 
 
                 <LinearLayout
+                    android:id="@+id/title2Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/titleTextView2"
                         fontPath="fonts/HanaMinB.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
                         android:background="@drawable/textview_border_light"
                         android:lineSpacingMultiplier="1.3"
                         android:padding="2dp"
@@ -98,11 +103,11 @@
                         android:textSize="20sp"/>
 
                     <TextView
+                        android:id="@+id/titleContentTextView2"
                         fontPath="fonts/HanaMinB.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="15dp"
-                        android:layout_marginTop="15dp"
                         android:text="@{taigiWord.hanji}"
                         android:textColor="#feee"
                         android:textSize="30sp"/>

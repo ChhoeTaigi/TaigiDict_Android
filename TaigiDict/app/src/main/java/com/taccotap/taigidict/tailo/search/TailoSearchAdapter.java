@@ -4,10 +4,12 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.databinding.ListitemTailoSearchBinding;
 import com.taccotap.taigidict.tailo.utils.TailoConstants;
+import com.taccotap.taigidict.tailo.utils.TailoDictHelper;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 
 import io.reactivex.processors.PublishProcessor;
@@ -26,6 +28,23 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
     private final Realm mRealm;
 
     private final PublishProcessor<Integer> mOnClickSubject = PublishProcessor.create();
+
+    public class TailoSearchViewHolder extends RealmViewHolder {
+        public final ListitemTailoSearchBinding dataBinding;
+        public TextView titleTextView1;
+        public TextView titleContentTextView1;
+        public TextView titleTextView2;
+        public TextView titleContentTextView2;
+
+        public TailoSearchViewHolder(ListitemTailoSearchBinding dataBinding) {
+            super(dataBinding.getRoot());
+            this.dataBinding = dataBinding;
+            this.titleTextView1 = (TextView) dataBinding.getRoot().findViewById(R.id.titleTextView1);
+            this.titleContentTextView1 = (TextView) dataBinding.getRoot().findViewById(R.id.titleContentTextView1);
+            this.titleTextView2 = (TextView) dataBinding.getRoot().findViewById(R.id.titleTextView2);
+            this.titleContentTextView2 = (TextView) dataBinding.getRoot().findViewById(R.id.titleContentTextView2);
+        }
+    }
 
     public TailoSearchAdapter(Context context, Realm realm) {
         super(context, realm.where(TlTaigiWord.class).contains("lomaji", TailoConstants.DEFAULT_QUERY_STRING).findAllAsync(), false);
@@ -53,22 +72,26 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
             }
         });
 
-        holder.dataBinding.setTaigiWord(tlTaigiWord);
-        holder.dataBinding.executePendingBindings();
+        // [屬性] 附-外來詞表
+        if (tlTaigiWord.getWordPropertyCode() == 12) {
+            holder.titleTextView1.setText(R.string.listitem_tailo_search_title_text_1_goalaigi);
+            holder.titleTextView2.setText(R.string.listitem_tailo_search_title_text_2_goalaigi);
+
+            holder.titleContentTextView1.setText(tlTaigiWord.getHanji());
+            holder.titleContentTextView2.setText(TailoDictHelper.getCombinatedHoagi(tlTaigiWord));
+        } else {
+            holder.titleTextView1.setText(R.string.listitem_tailo_search_title_text_1_tailo);
+            holder.titleTextView2.setText(R.string.listitem_tailo_search_title_text_2_tailo);
+
+            holder.dataBinding.setTaigiWord(tlTaigiWord);
+            holder.dataBinding.executePendingBindings();
+        }
     }
 
     public TlTaigiWord getItem(int position) {
         return this.getData().get(position);
     }
 
-    public class TailoSearchViewHolder extends RealmViewHolder {
-        public final ListitemTailoSearchBinding dataBinding;
-
-        public TailoSearchViewHolder(ListitemTailoSearchBinding dataBinding) {
-            super(dataBinding.getRoot());
-            this.dataBinding = dataBinding;
-        }
-    }
 
     public void searchLomaji(String lomaji, boolean isSearchEquals) {
         final RealmResults<TlTaigiWord> realmResults;

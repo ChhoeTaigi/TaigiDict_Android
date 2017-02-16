@@ -9,6 +9,8 @@
     <string name="nav_about">關於</string>
     <string name="nav_licenses">授權資訊</string>
 
+    <string name="fragment_tailo_search_description1">若是欲用「羅馬字」來揣，會使輸入「臺羅」抑是「白話字」，請用羅馬字 ê 聲調符號。</string>
+    <string name="fragment_tailo_search_description2">若是欲聽看覓按怎唸，需要上網才會使聽。</string>
     <string name="fragment_tailo_search_method">請選一種揣 ê 方式：</string>
     <string name="fragment_tailo_search_button_lomaji">臺語羅馬字</string>
     <string name="fragment_tailo_search_button_hoagi">對應ê華語漢字</string>
@@ -21,8 +23,15 @@
     <string name="tailo_search_contains_radiobutton_text">揣差不多ê</string>
     <string name="tailo_search_equals_radiobutton_text">揣攏相仝ê</string>
 
+    <string name="listitem_tailo_search_title_text_1_tailo">臺羅</string>
+    <string name="listitem_tailo_search_title_text_2_tailo">漢字</string>
+    <string name="listitem_tailo_search_title_text_1_goalaigi">外來語發音</string>
+    <string name="listitem_tailo_search_title_text_2_goalaigi">對應 ê 華語</string>
     <string name="toast_voice_need_network_connection">語音ê功能需要上網才會使聽。</string>
     <string name="toast_sorry_cant_play">真歹勢，這無法度聽。</string>
+
+    <string name="activity_tailo_word_title_text_1_goalaigi">發音</string>
+    <string name="activity_tailo_word_title_text_2_goalaigi">華語</string>
 
     <string name="help_fragment_title_card_text">多謝你 ê 使用，若是有啥物問題，請你對下跤 ê 方式來和我反應。\n\n若是你會使來幫贊，不管是建議 kap 指教，抑是提供其他 ê 辭典資料，想欲鬥出力出錢，攏誠歡迎，請和我連絡。</string>
     <string name="help_fragment_feedback_card_title_text">建議 kap 指教</string>

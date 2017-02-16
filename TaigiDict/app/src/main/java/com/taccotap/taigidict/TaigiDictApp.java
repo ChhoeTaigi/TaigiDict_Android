@@ -3,6 +3,7 @@ package com.taccotap.taigidict;
 import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.eggheadgames.realmassethelper.IRealmAssetHelperStorageListener;
 import com.eggheadgames.realmassethelper.RealmAssetHelper;
 import com.eggheadgames.realmassethelper.RealmAssetHelperStatus;
@@ -20,10 +21,24 @@ public class TaigiDictApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
 
+        initFabric();
         initRealm();
         initCalligraphy();
+    }
+
+    private void initFabric() {
+        if (BuildConfig.DEBUG) {
+            // Set up Crashlytics, disabled for debug builds
+            Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                    .core(new CrashlyticsCore.Builder().disabled(true).build())
+                    .build();
+
+            // Initialize Fabric with the debug-disabled crashlytics.
+            Fabric.with(this, crashlyticsKit);
+        } else {
+            Fabric.with(this, new Crashlytics());
+        }
     }
 
     private void initCalligraphy() {

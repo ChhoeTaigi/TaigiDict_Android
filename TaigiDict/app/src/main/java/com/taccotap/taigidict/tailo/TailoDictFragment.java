@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.tailo.search.TailoSearchActivity;
 
@@ -17,6 +20,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TailoDictFragment extends Fragment {
+
+    @BindView(R.id.descIcon1)
+    ImageView mDescIcon1ImageView;
+
+    @BindView(R.id.descIcon2)
+    ImageView mDescIcon2ImageView;
 
     @BindView(R.id.button_search_lmj)
     Button mSearchLmjButton;
@@ -45,6 +54,11 @@ public class TailoDictFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_tailo_dict, container, false);
         ButterKnife.bind(this, view);
+
+        mDescIcon1ImageView.setImageDrawable(
+                new IconicsDrawable(getContext()).icon(CommunityMaterial.Icon.cmd_information_outline).color(getContext().getResources().getColor(R.color.colorPrimary)).sizeDp(18));
+        mDescIcon2ImageView.setImageDrawable(
+                new IconicsDrawable(getContext()).icon(CommunityMaterial.Icon.cmd_information_outline).color(getContext().getResources().getColor(R.color.colorPrimary)).sizeDp(18));
 
         return view;
     }

@@ -17,6 +17,7 @@ import com.taccotap.taigidict.BuildConfig;
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.tailo.utils.TailoConstants;
 import com.taccotap.taigidict.tailo.word.TailoWordActivity;
+import com.taccotap.taigidict.utils.LomajiSearchUtils;
 import com.taccotap.taigidict.utils.LomajiUnicodeUtils;
 import com.taccotap.taigidict.utils.Poj2TailoUtils;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
@@ -178,6 +179,10 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
             }
 
             handledQueryString = Poj2TailoUtils.poj2tailo(fixedLomaji);
+        }
+
+        if (handledQueryString.contains(" ")) {
+            handledQueryString = LomajiSearchUtils.allowSpaceInsteadOfHyphen(handledQueryString);
         }
 
         doSearch(handledQueryString);

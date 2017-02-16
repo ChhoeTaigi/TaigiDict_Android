@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,10 @@ import android.widget.Toast;
 
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.databinding.ActivityTailoWordBinding;
+import com.taccotap.taigidict.tailo.utils.TailoDictHelper;
 import com.taccotap.taigidict.tailo.utils.TailoTaigiWordAudioUrlHelper;
 import com.taccotap.taigidict.utils.NetworkUtils;
 import com.taccotap.taigidictmodel.tailo.TlDescription;
-import com.taccotap.taigidictmodel.tailo.TlExampleSentence;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 
 import butterknife.BindView;
@@ -33,6 +32,18 @@ import io.realm.RealmModel;
 public class TailoWordActivity extends AppCompatActivity {
     private static final String TAG = TailoWordActivity.class.getSimpleName();
 
+    @BindView(R.id.titleTextView1)
+    TextView mTitleTextView1;
+
+    @BindView(R.id.titleContentTextView1)
+    TextView mTitleContentTextView1;
+
+    @BindView(R.id.titleTextView2)
+    TextView mTitleTextView2;
+
+    @BindView(R.id.titleContentTextView2)
+    TextView mTitleContentTextView2;
+
     @BindView(R.id.descriptionLayout)
     ViewGroup mDescriptionLayout;
 
@@ -41,6 +52,9 @@ public class TailoWordActivity extends AppCompatActivity {
 
     @BindView(R.id.wordPropertyLayout)
     ViewGroup mWordPropertyLayout;
+
+    @BindView(R.id.wordPropertyTextView)
+    TextView mWordPropertyTextView;
 
     @BindView(R.id.fab)
     FloatingActionButton mFloatingActionButton;
@@ -88,12 +102,22 @@ public class TailoWordActivity extends AppCompatActivity {
             public void onChange(RealmModel element) {
                 Log.i(TAG, "lomaji=" + mTaigiWord.getLomaji());
 
-                // bind word
-                mBinding.setTaigiWord(mTaigiWord);
-
+                // [屬性] 附-外來詞表
                 if (mTaigiWord.getWordPropertyCode() == 12) {
-                    mVoiceUrl = TailoTaigiWordAudioUrlHelper.getTaigiWailaiAudioUrl(mMainCode);
+                    // bind 外來語
+                    mTitleTextView1.setText(R.string.activity_tailo_word_title_text_1_goalaigi);
+                    mTitleTextView2.setText(R.string.activity_tailo_word_title_text_2_goalaigi);
+                    mTitleContentTextView1.setText(mTaigiWord.getHanji());
+                    mTitleContentTextView2.setText(TailoDictHelper.getCombinatedHoagi(mTaigiWord));
+                    mWordPropertyTextView.setText(mTaigiWord.getWordPropertyText());
+
+                    // bind audio link
+                    mVoiceUrl = TailoTaigiWordAudioUrlHelper.getTaigiGoaLaiAudioUrl(mMainCode);
                 } else {
+                    // bind word
+                    mBinding.setTaigiWord(mTaigiWord);
+
+                    // bind audio link
                     mVoiceUrl = TailoTaigiWordAudioUrlHelper.getTaigiAudioUrl(mMainCode);
                 }
 
@@ -106,55 +130,8 @@ public class TailoWordActivity extends AppCompatActivity {
                 final RealmList<TlDescription> descriptions = mTaigiWord.getDescriptions();
                 final int descriptionsCount = descriptions.size();
                 if (descriptionsCount > 0) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 1; i <= descriptionsCount; i++) {
-                        final TlDescription description = descriptions.get(i - 1);
-
-                        if (descriptionsCount > 1) {
-                            stringBuilder.append(i + ".");
-                        }
-
-                        final String partOfSpeech = description.getPartOfSpeech();
-                        if (!TextUtils.isEmpty(partOfSpeech)) {
-                            stringBuilder.append("【" + partOfSpeech + "】");
-                        } else {
-                            if (descriptionsCount > 1) {
-                                stringBuilder.append(" ");
-                            }
-                        }
-
-                        stringBuilder.append(description.getDescription());
-
-                        final RealmList<TlExampleSentence> exampleSentences = description.getExampleSentences();
-                        final int exampleSentencesCount = exampleSentences.size();
-                        for (int j = 0; j < exampleSentencesCount; j++) {
-                            final TlExampleSentence currentExampleSentence = exampleSentences.get(j);
-
-                            if (j == 0) {
-                                stringBuilder.append("例：");
-                            }
-
-                            stringBuilder.append(currentExampleSentence.getExampleSentenceLomaji());
-                            stringBuilder.append(" ");
-                            stringBuilder.append(currentExampleSentence.getExampleSentenceHanji());
-
-                            if (!TextUtils.isEmpty(currentExampleSentence.getExampleSentenceHoagi())) {
-                                stringBuilder.append(" (");
-                                stringBuilder.append(currentExampleSentence.getExampleSentenceHoagi());
-                                stringBuilder.append(")");
-                            }
-
-                            if (j < exampleSentencesCount - 1) {
-                                stringBuilder.append("；");
-                            }
-                        }
-
-                        if (i < descriptionsCount) {
-                            stringBuilder.append(System.getProperty("line.separator"));
-                        }
-                    }
-
-                    mDescriptionTextView.setText(stringBuilder.toString());
+                    final String description = TailoDictHelper.getCombinatedDescription(mTaigiWord);
+                    mDescriptionTextView.setText(description);
                 } else {
                     mDescriptionLayout.setVisibility(View.GONE);
                 }

@@ -11,16 +11,19 @@
 
     <string name="fragment_tailo_search_description1">若是欲用「羅馬字」來揣，會使輸入「臺羅」抑是「白話字」，請用羅馬字 ê 聲調符號。</string>
     <string name="fragment_tailo_search_description2">若是欲聽看覓按怎唸，需要上網才會使聽。</string>
+    <string name="fragment_tailo_search_description3"><![CDATA[若有問題會使<a href="http://line.me/ti/p/%40vhy6570i">加我 ê LINE</a>。]]></string>
     <string name="fragment_tailo_search_method">請選一種揣 ê 方式：</string>
     <string name="fragment_tailo_search_button_lomaji">臺語羅馬字</string>
+    <string name="fragment_tailo_search_button_hanji">臺語漢字</string>
     <string name="fragment_tailo_search_button_hoagi">對應ê華語漢字</string>
     <string name="fragment_tailo_search_button_all">全文關鍵字</string>
 
     <string name="search_lomaji_hint">請輸入臺語羅馬字來揣......</string>
+    <string name="search_hanji_hint">請輸入臺語漢字來揣......</string>
     <string name="search_hoagi_hint">請輸入對應ê華語漢字來揣......</string>
     <string name="search_all_hint">請輸入全文關鍵字來揣......</string>
 
-    <string name="tailo_search_contains_radiobutton_text">揣差不多ê</string>
+    <string name="tailo_search_contains_radiobutton_text">揣有相關ê</string>
     <string name="tailo_search_equals_radiobutton_text">揣攏相仝ê</string>
 
     <string name="listitem_tailo_search_title_text_1_tailo">臺羅</string>
@@ -36,6 +39,8 @@
     <string name="help_fragment_title_card_text">多謝你 ê 使用，若是有啥物問題，請你對下跤 ê 方式來和我反應。\n\n若是你會使來幫贊，不管是建議 kap 指教，抑是提供其他 ê 辭典資料，想欲鬥出力出錢，攏誠歡迎，請和我連絡。</string>
     <string name="help_fragment_feedback_card_title_text">建議 kap 指教</string>
     <string name="help_fragment_help_card_title_text">需要你 ê 幫贊</string>
+    <string name="help_fragment_line_account_item_text">加我 ê LINE</string>
+    <string name="url_taigidictapp_line_account">http://line.me/ti/p/%40vhy6570i</string>
     <string name="help_fragment_facebook_group_item_text">面冊 ê 社團</string>
     <string name="url_taigidictapp_facebook_group">https://www.facebook.com/groups/TaigiDictApp/</string>
     <string name="help_fragment_email_me_item_text">寫批予我</string>

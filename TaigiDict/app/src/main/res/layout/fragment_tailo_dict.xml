@@ -65,6 +65,29 @@
                         android:textColor="#f333"
                         android:textSize="18sp"/>
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="top"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/descIcon3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:src="@drawable/ic_menu_camera"/>
+
+                    <TextView
+                        android:id="@+id/descText3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="#f333"
+                        android:textSize="18sp"/>
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
@@ -80,7 +103,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/fragment_tailo_search_method"
                 android:textColor="#f666"
-                android:textSize="24sp"/>
+                android:textSize="22sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,31 +123,43 @@
                     android:text="@string/fragment_tailo_search_button_lomaji"
                     android:textAllCaps="false"
                     android:textColor="#fddd"
-                    android:textSize="26sp"/>
+                    android:textSize="24sp"/>
+
+                <Button
+                    android:id="@+id/button_search_hanji"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorAccent"
+                    android:text="@string/fragment_tailo_search_button_hanji"
+                    android:textAllCaps="false"
+                    android:textColor="#fddd"
+                    android:textSize="24sp"/>
 
                 <Button
                     android:id="@+id/button_search_hoagi"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="6dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorAccent"
                     android:text="@string/fragment_tailo_search_button_hoagi"
                     android:textAllCaps="false"
                     android:textColor="#fddd"
-                    android:textSize="26sp"/>
+                    android:textSize="24sp"/>
 
                 <Button
                     android:id="@+id/button_search_all"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="6dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorAccent"
                     android:text="@string/fragment_tailo_search_button_all"
                     android:textAllCaps="false"
                     android:textColor="#fddd"
-                    android:textSize="26sp"/>
+                    android:textSize="24sp"/>
             </LinearLayout>
 
         </LinearLayout>

@@ -38,6 +38,12 @@ public class HelpFragment extends MaterialAboutFragment {
         feedbackCardBuilder.title(getString(R.string.help_fragment_feedback_card_title_text));
 
         feedbackCardBuilder.addItem(ConvenienceBuilder.createWebsiteActionItem(context,
+                getResources().getDrawable(R.drawable.line_app_icon),
+                getString(R.string.help_fragment_line_account_item_text),
+                true,
+                Uri.parse(getString(R.string.url_taigidictapp_line_account))));
+
+        feedbackCardBuilder.addItem(ConvenienceBuilder.createWebsiteActionItem(context,
                 new IconicsDrawable(context, CommunityMaterial.Icon.cmd_facebook_box).sizeDp(48),
                 getString(R.string.help_fragment_facebook_group_item_text),
                 true,

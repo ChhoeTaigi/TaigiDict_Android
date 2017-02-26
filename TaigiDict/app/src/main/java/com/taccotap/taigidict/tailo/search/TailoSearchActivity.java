@@ -31,12 +31,14 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
     private static final String TAG = TailoSearchActivity.class.getSimpleName();
 
     public static final String ACTION_SEARCH_LMJ = "ACTION_SEARCH_LMJ";
+    public static final String ACTION_SEARCH_HANJI = "ACTION_SEARCH_HANJI";
     public static final String ACTION_SEARCH_HOAGI = "ACTION_SEARCH_HOAGI";
     public static final String ACTION_SEARCH_ALL = "ACTION_SEARCH_ALL";
 
     private static final int SEARCH_TYPE_LOMAJI = 0;
-    private static final int SEARCH_TYPE_HOAGI = 1;
-    private static final int SEARCH_TYPE_ALL = 2;
+    private static final int SEARCH_TYPE_HANJI = 1;
+    private static final int SEARCH_TYPE_HOAGI = 2;
+    private static final int SEARCH_TYPE_ALL = 3;
 
     @BindView(R.id.searchView)
     SearchView mSearchView;
@@ -79,13 +81,16 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         Intent intent = getIntent();
 
         if (ACTION_SEARCH_LMJ.equals(intent.getAction())) {
-            mCurrentSearchType = 0;
+            mCurrentSearchType = SEARCH_TYPE_LOMAJI;
             setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_lomaji) + ")");
+        } else if (ACTION_SEARCH_HANJI.equals(intent.getAction())) {
+            mCurrentSearchType = SEARCH_TYPE_HANJI;
+            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_hanji) + ")");
         } else if (ACTION_SEARCH_HOAGI.equals(intent.getAction())) {
-            mCurrentSearchType = 1;
+            mCurrentSearchType = SEARCH_TYPE_HOAGI;
             setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_hoagi) + ")");
         } else if (ACTION_SEARCH_ALL.equals(intent.getAction())) {
-            mCurrentSearchType = 2;
+            mCurrentSearchType = SEARCH_TYPE_ALL;
             setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_all) + ")");
         }
     }
@@ -116,6 +121,9 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         if (mCurrentSearchType == SEARCH_TYPE_LOMAJI) {
             mSearchView.setQueryHint(getString(R.string.search_lomaji_hint));
             mSearchRangeRadioGroup.setVisibility(View.VISIBLE);
+        } else if (mCurrentSearchType == SEARCH_TYPE_HANJI) {
+            mSearchView.setQueryHint(getString(R.string.search_hanji_hint));
+            mSearchRangeRadioGroup.setVisibility(View.VISIBLE);
         } else if (mCurrentSearchType == SEARCH_TYPE_HOAGI) {
             mSearchView.setQueryHint(getString(R.string.search_hoagi_hint));
             mSearchRangeRadioGroup.setVisibility(View.VISIBLE);
@@ -144,6 +152,8 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
 
         if (mCurrentSearchType == SEARCH_TYPE_LOMAJI) {
             mTailoSearchAdapter.searchLomaji(query, isSearchEquals);
+        } else if (mCurrentSearchType == SEARCH_TYPE_HANJI) {
+            mTailoSearchAdapter.searchHanji(query, isSearchEquals);
         } else if (mCurrentSearchType == SEARCH_TYPE_HOAGI) {
             mTailoSearchAdapter.searchHoagi(query, isSearchEquals);
         } else if (mCurrentSearchType == SEARCH_TYPE_ALL) {

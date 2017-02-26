@@ -113,6 +113,26 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
         });
     }
 
+    public void searchHanji(String hanji, boolean isSearchEquals) {
+        final RealmResults<TlTaigiWord> realmResults;
+
+        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
+        if (!isSearchEquals) {
+            where = where.contains("hanji", hanji, Case.INSENSITIVE);
+        } else {
+            where = where.equalTo("hanji", hanji, Case.INSENSITIVE);
+        }
+
+        realmResults = where.findAllSortedAsync("hanji", Sort.ASCENDING);
+
+        realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiWord>>() {
+            @Override
+            public void onChange(RealmResults<TlTaigiWord> element) {
+                updateData(realmResults);
+            }
+        });
+    }
+
     public void searchHoagi(String hoagi, boolean isSearchEquals) {
         final RealmResults<TlTaigiWord> realmResults;
         RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);

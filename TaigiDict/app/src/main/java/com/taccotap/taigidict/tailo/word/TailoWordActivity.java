@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.taccotap.taigidict.BuildConfig;
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.databinding.ActivityTailoWordBinding;
 import com.taccotap.taigidict.tailo.utils.TailoDictHelper;
@@ -87,7 +88,9 @@ public class TailoWordActivity extends AppCompatActivity {
 
         mMainCode = getIntent().getIntExtra(EXTRA_TAILO_WORD_MAIN_CODE, -1);
 
-        Log.i(TAG, "mainCode=" + mMainCode);
+        if (BuildConfig.DEBUG_LOG) {
+            Log.i(TAG, "mainCode=" + mMainCode);
+        }
 
         handleCurrentWord();
     }
@@ -100,7 +103,9 @@ public class TailoWordActivity extends AppCompatActivity {
         mTaigiWord.addChangeListener(new RealmChangeListener<RealmModel>() {
             @Override
             public void onChange(RealmModel element) {
-                Log.i(TAG, "lomaji=" + mTaigiWord.getLomaji());
+                if (BuildConfig.DEBUG_LOG) {
+                    Log.d(TAG, "lomaji=" + mTaigiWord.getLomaji());
+                }
 
                 // [屬性] 附-外來詞表
                 if (mTaigiWord.getWordPropertyCode() == 12) {

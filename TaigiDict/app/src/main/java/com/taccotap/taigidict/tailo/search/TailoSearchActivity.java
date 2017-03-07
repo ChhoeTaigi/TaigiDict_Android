@@ -20,6 +20,7 @@ import com.taccotap.taigidict.tailo.word.TailoWordActivity;
 import com.taccotap.taigidict.utils.LomajiSearchUtils;
 import com.taccotap.taigidict.utils.LomajiUnicodeUtils;
 import com.taccotap.taigidict.utils.Poj2TailoUtils;
+import com.taccotap.taigidict.utils.TailoNumberToneUtils;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 
 import butterknife.BindView;
@@ -189,6 +190,14 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
             }
 
             handledQueryString = Poj2TailoUtils.poj2tailo(fixedLomaji);
+
+            if (BuildConfig.DEBUG_LOG) {
+                Log.d(TAG, "handledQueryString (before number tone parser): " + handledQueryString);
+            }
+            handledQueryString = TailoNumberToneUtils.numberTone2LomaijiTone(handledQueryString);
+            if (BuildConfig.DEBUG_LOG) {
+                Log.d(TAG, "handledQueryString  (after number tone parser): " + handledQueryString);
+            }
         }
 
         if (handledQueryString.contains(" ")) {
@@ -209,7 +218,9 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
             stringBuilder.append(stringUnicode + " ");
         }
 
-        Log.d(TAG, "Input: " + query + ", Unicode: " + stringBuilder.toString());
+        if (BuildConfig.DEBUG_LOG) {
+            Log.d(TAG, "Input: " + query + ", Unicode: " + stringBuilder.toString());
+        }
     }
 
     @Override

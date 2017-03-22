@@ -2,6 +2,7 @@ package com.taccotap.taigidict.tailo.search;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -58,14 +59,22 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
     @Override
     public TailoSearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final ListitemTailoSearchBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.listitem_tailo_search, parent, false);
-        return new TailoSearchViewHolder(dataBinding);
+
+        final TailoSearchViewHolder viewHolder = new TailoSearchViewHolder(dataBinding);
+
+        Typeface lomajiTypeface = Typeface.createFromAsset(viewHolder.itemView.getContext().getAssets(), "fonts/twu3.ttf");
+        viewHolder.titleContentTextView1.setTypeface(lomajiTypeface);
+        Typeface hanjiTypeface = Typeface.createFromAsset(viewHolder.itemView.getContext().getAssets(), "fonts/mingliub.ttc");
+        viewHolder.titleContentTextView2.setTypeface(hanjiTypeface);
+
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(TailoSearchViewHolder holder, final int position) {
+    public void onBindViewHolder(TailoSearchViewHolder viewHolder, final int position) {
         TlTaigiWord tlTaigiWord = getData().get(position);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mOnClickSubject.onNext(position);
@@ -74,17 +83,17 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
 
         // [屬性] 附-外來詞表
         if (tlTaigiWord.getWordPropertyCode() == 12) {
-            holder.titleTextView1.setText(R.string.listitem_tailo_search_title_text_1_goalaigi);
-            holder.titleTextView2.setText(R.string.listitem_tailo_search_title_text_2_goalaigi);
+            viewHolder.titleTextView1.setText(R.string.listitem_tailo_search_title_text_1_goalaigi);
+            viewHolder.titleTextView2.setText(R.string.listitem_tailo_search_title_text_2_goalaigi);
 
-            holder.titleContentTextView1.setText(tlTaigiWord.getHanji());
-            holder.titleContentTextView2.setText(TailoDictHelper.getCombinatedHoagi(tlTaigiWord));
+            viewHolder.titleContentTextView1.setText(tlTaigiWord.getHanji());
+            viewHolder.titleContentTextView2.setText(TailoDictHelper.getCombinatedHoagi(tlTaigiWord));
         } else {
-            holder.titleTextView1.setText(R.string.listitem_tailo_search_title_text_1_tailo);
-            holder.titleTextView2.setText(R.string.listitem_tailo_search_title_text_2_tailo);
+            viewHolder.titleTextView1.setText(R.string.listitem_tailo_search_title_text_1_tailo);
+            viewHolder.titleTextView2.setText(R.string.listitem_tailo_search_title_text_2_tailo);
 
-            holder.dataBinding.setTaigiWord(tlTaigiWord);
-            holder.dataBinding.executePendingBindings();
+            viewHolder.dataBinding.setTaigiWord(tlTaigiWord);
+            viewHolder.dataBinding.executePendingBindings();
         }
     }
 

@@ -1,6 +1,8 @@
 package com.taccotap.taigidict.tailo.word;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -29,6 +31,7 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmList;
 import io.realm.RealmModel;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class TailoWordActivity extends AppCompatActivity {
     private static final String TAG = TailoWordActivity.class.getSimpleName();
@@ -71,6 +74,11 @@ public class TailoWordActivity extends AppCompatActivity {
     private String mVoiceUrl;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_tailo_word);
@@ -78,7 +86,19 @@ public class TailoWordActivity extends AppCompatActivity {
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
+        setFonts();
+
         handleIntent();
+    }
+
+    private void setFonts() {
+        Typeface lomajiTypeface = Typeface.createFromAsset(getAssets(), "fonts/twu3.ttf");
+        mTitleContentTextView1.setTypeface(lomajiTypeface);
+
+        Typeface hanjiTypeface = Typeface.createFromAsset(getAssets(), "fonts/mingliub.ttc");
+        mTitleContentTextView2.setTypeface(hanjiTypeface);
+        mDescriptionTextView.setTypeface(hanjiTypeface);
+        mWordPropertyTextView.setTypeface(hanjiTypeface);
     }
 
     private void handleIntent() {

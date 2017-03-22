@@ -9,8 +9,8 @@
     <string name="nav_about">關於</string>
     <string name="nav_licenses">授權資訊</string>
 
-    <string name="fragment_tailo_search_description1">若是欲用「羅馬字」來揣，會使輸入「臺羅」抑是「白話字」，請用羅馬字 ê 聲調符號。</string>
-    <string name="fragment_tailo_search_description2">若是欲聽看覓按怎唸，需要上網才會使聽。</string>
+    <string name="fragment_tailo_search_description1">若是欲用「羅馬字」來揣，會使輸入「臺羅」抑是「白話字」，聲調符號欲用「數字」抑是「羅馬字」攏會使。</string>
+    <string name="fragment_tailo_search_description2">若是欲聽字詞按怎唸，愛上網才會使聽。</string>
     <string name="fragment_tailo_search_description3"><![CDATA[若有問題會使<a href="http://line.me/ti/p/%40vhy6570i">加我 ê LINE</a>。]]></string>
     <string name="fragment_tailo_search_method">請選一種揣 ê 方式：</string>
     <string name="fragment_tailo_search_button_lomaji">臺語羅馬字</string>

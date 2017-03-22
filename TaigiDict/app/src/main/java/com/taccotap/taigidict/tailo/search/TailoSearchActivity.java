@@ -1,5 +1,6 @@
 package com.taccotap.taigidict.tailo.search;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,18 +16,18 @@ import android.widget.RadioGroup;
 
 import com.taccotap.taigidict.BuildConfig;
 import com.taccotap.taigidict.R;
+import com.taccotap.taigidict.converter.LomajiUnicodeConverter;
+import com.taccotap.taigidict.converter.PojToTailoConverter;
 import com.taccotap.taigidict.tailo.utils.TailoConstants;
 import com.taccotap.taigidict.tailo.word.TailoWordActivity;
 import com.taccotap.taigidict.utils.LomajiSearchUtils;
-import com.taccotap.taigidict.utils.LomajiUnicodeUtils;
-import com.taccotap.taigidict.utils.Poj2TailoUtils;
-import com.taccotap.taigidict.utils.TailoNumberToneUtils;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.functions.Consumer;
 import io.realm.Realm;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class TailoSearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, CompoundButton.OnCheckedChangeListener {
     private static final String TAG = TailoSearchActivity.class.getSimpleName();
@@ -64,6 +65,11 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
     private boolean mIsCurrentSearchEquals = false;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tailo_search);
@@ -72,6 +78,7 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         handleIntent();
 
         mRealm = Realm.getDefaultInstance();
+
         initRecyclerView();
         initRadioButton();
         initSearch();
@@ -183,21 +190,13 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         String handledQueryString = query.trim();
 
         if (mCurrentSearchType == SEARCH_TYPE_LOMAJI) {
-            String fixedLomaji = LomajiUnicodeUtils.fixTwoCharWord(query);
+            String fixedLomaji = LomajiUnicodeConverter.convertTwoCharWordToOneCharWord(query);
 
             if (BuildConfig.DEBUG_LOG) {
                 logInputUnicode(fixedLomaji);
             }
 
-            handledQueryString = Poj2TailoUtils.poj2tailo(fixedLomaji);
-
-            if (BuildConfig.DEBUG_LOG) {
-                Log.d(TAG, "handledQueryString (before number tone parser): " + handledQueryString);
-            }
-            handledQueryString = TailoNumberToneUtils.numberTone2LomaijiTone(handledQueryString);
-            if (BuildConfig.DEBUG_LOG) {
-                Log.d(TAG, "handledQueryString  (after number tone parser): " + handledQueryString);
-            }
+            handledQueryString = PojToTailoConverter.convertPojMixedInputToTailoWords(fixedLomaji);
         }
 
         if (handledQueryString.contains(" ")) {

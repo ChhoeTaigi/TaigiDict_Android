@@ -112,7 +112,7 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
             where = where.equalTo("lomaji", lomaji, Case.INSENSITIVE);
         }
 
-        realmResults = where.findAllSortedAsync("lomaji", Sort.ASCENDING);
+        realmResults = where.findAllSortedAsync("mainCode", Sort.ASCENDING);
 
         realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiWord>>() {
             @Override
@@ -132,7 +132,7 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
             where = where.equalTo("hanji", hanji, Case.INSENSITIVE);
         }
 
-        realmResults = where.findAllSortedAsync("hanji", Sort.ASCENDING);
+        realmResults = where.findAllSortedAsync("mainCode", Sort.ASCENDING);
 
         realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiWord>>() {
             @Override

@@ -1,9 +1,79 @@
 package com.taccotap.taigidict.converter;
 
-public class LomajiUnicodeConverter {
+import android.text.TextUtils;
+
+public class LomajiConverter {
+    private static final String TAG = LomajiConverter.class.getSimpleName();
+
+    public static final int LOMAJI_TYPE_POJ = 1;
+    public static final int LOMAJI_TYPE_TAILO = 2;
+
+    public static String convertLomajiWordToNumberTone(String lomajiWord, int lomajiType) {
+        if (TextUtils.isEmpty(lomajiWord)) {
+            return lomajiWord;
+        }
+
+        String fixedLomajiWord = convertTwoCharWordToPossibleOneCharWord(lomajiWord);
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        String number = null;
+        int length = fixedLomajiWord.length();
+        for (int i = 0; i < length; i++) {
+            String currentLomajiChar = fixedLomajiWord.substring(i, i + 1);
+
+            boolean isTwoCharWord = false;
+
+            // check two-char word
+            if (i > 0) {
+                String previousLomajiChar = fixedLomajiWord.substring(i - 1, i);
+                if (currentLomajiChar.equals("\u0300")
+                        || currentLomajiChar.equals("\u0302")
+                        || currentLomajiChar.equals("\u0304")
+                        || currentLomajiChar.equals("\u030d")
+                        || currentLomajiChar.equals("\u0358")) {
+                    currentLomajiChar = previousLomajiChar + currentLomajiChar;
+                    isTwoCharWord = true;
+                }
+            }
+
+            String currentLomajiCharNumberTone = null;
+            if (lomajiType == LOMAJI_TYPE_POJ) {
+                currentLomajiCharNumberTone = Poj.sPojUnicodeToPojNumberHashMap.get(currentLomajiChar);
+            } else if (lomajiType == LOMAJI_TYPE_TAILO) {
+                currentLomajiCharNumberTone = Tailo.sTailoUnicodeToTailoNumberHashMap.get(currentLomajiChar);
+            }
+
+            if (currentLomajiCharNumberTone != null) {
+//                Log.d(TAG, "currentLomajiCharNumberTone = " + currentLomajiCharNumberTone);
+
+                number = currentLomajiCharNumberTone.substring(currentLomajiCharNumberTone.length() - 1);
+                if (!isTwoCharWord) {
+                    String currentLomajiWithoutNumber = currentLomajiCharNumberTone.substring(0, currentLomajiCharNumberTone.length() - 1);
+                    stringBuilder.append(currentLomajiWithoutNumber);
+
+//                    Log.d(TAG, "stringBuilder.append: currentLomajiWithoutNumber=" + currentLomajiWithoutNumber);
+                }
+            } else {
+                if (number != null && TextUtils.isDigitsOnly(currentLomajiChar)) {
+                    // remove useless ending numbers, skip
+                } else {
+                    stringBuilder.append(currentLomajiChar);
+
+//                    Log.d(TAG, "stringBuilder.append: currentLomajiChar=" + currentLomajiChar);
+                }
+            }
+        }
+
+        if (number != null) {
+            stringBuilder.append(number);
+        }
+
+        return stringBuilder.toString();
+    }
 
     // fix two-char word to one-char word
-    public static String convertTwoCharWordToOneCharWord(String unicodeLomaji) {
+    public static String convertTwoCharWordToPossibleOneCharWord(String unicodeLomaji) {
         String fixed = unicodeLomaji
                 // x8 not change
 
@@ -75,5 +145,9 @@ public class LomajiUnicodeConverter {
                 .replaceAll("\u004d\u0301", "\u1e3e"); // M2; M3, M5, M7 not change
 
         return fixed;
+    }
+
+    public static String removeToneNumber(String lomajiNumber) {
+        return lomajiNumber.replaceAll("[1-9]", "");
     }
 }

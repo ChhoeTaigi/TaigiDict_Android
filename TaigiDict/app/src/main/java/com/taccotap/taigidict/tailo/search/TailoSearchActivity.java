@@ -16,7 +16,6 @@ import android.widget.RadioGroup;
 
 import com.taccotap.taigidict.BuildConfig;
 import com.taccotap.taigidict.R;
-import com.taccotap.taigidict.converter.LomajiUnicodeConverter;
 import com.taccotap.taigidict.converter.PojToTailoConverter;
 import com.taccotap.taigidict.tailo.utils.TailoConstants;
 import com.taccotap.taigidict.tailo.word.TailoWordActivity;
@@ -190,13 +189,11 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         String handledQueryString = query.trim();
 
         if (mCurrentSearchType == SEARCH_TYPE_LOMAJI) {
-            String fixedLomaji = LomajiUnicodeConverter.convertTwoCharWordToOneCharWord(query);
-
             if (BuildConfig.DEBUG_LOG) {
-                logInputUnicode(fixedLomaji);
+                logInputUnicode(handledQueryString);
             }
 
-            handledQueryString = PojToTailoConverter.convertPojMixedInputToTailoWords(fixedLomaji);
+            handledQueryString = PojToTailoConverter.convertPojMixedInputToTailoWords(handledQueryString);
         }
 
         if (handledQueryString.contains(" ")) {

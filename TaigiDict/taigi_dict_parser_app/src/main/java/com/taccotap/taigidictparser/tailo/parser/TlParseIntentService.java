@@ -33,7 +33,7 @@ public class TlParseIntentService extends IntentService {
     private static final String TAG = TlParseIntentService.class.getSimpleName();
 
     private static final String ASSETS_PATH_TAILO_DICT_TAIGI_WORDS = "tailo/詞目總檔(含俗諺).xls";
-    private static final String ASSETS_PATH_TAILO_DICT_HOAGI_WORDS = "tailo/對應華語(不公開項目).xls";
+    private static final String ASSETS_PATH_TAILO_DICT_HOAGI_WORDS = "tailo/華語對應.xls";
     private static final String ASSETS_PATH_TAILO_DICT_DESCRIPTIONS = "tailo/釋義.xls";
     private static final String ASSETS_PATH_TAILO_DICT_EXAMPLE_SENTENCES = "tailo/例句.xls";
     private static final String ASSETS_PATH_TAILO_DICT_ANOTHER_PRONOUNCE = "tailo/又音(又唸作).xls";
@@ -247,11 +247,8 @@ public class TlParseIntentService extends IntentService {
 
                     if (colNum == 1) {
                         final String stringCellValue = currentCell.getStringCellValue();
-                        currentHoagiWord.setHoagiCode(Integer.valueOf(stringCellValue));
-                    } else if (colNum == 2) {
-                        final String stringCellValue = currentCell.getStringCellValue();
                         currentHoagiWord.setMainCode(Integer.valueOf(stringCellValue));
-                    } else if (colNum == 3) {
+                    } else if (colNum == 2) {
                         currentHoagiWord.setHoagiWord(currentCell.getStringCellValue());
                     } else {
                         break;

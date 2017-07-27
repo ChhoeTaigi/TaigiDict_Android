@@ -24,8 +24,8 @@ android {
         applicationId "com.taccotap.taigidict"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 8
-        versionName "1.1.0"
+        versionCode 9
+        versionName "2.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

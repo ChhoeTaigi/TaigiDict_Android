@@ -10,6 +10,7 @@ import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -43,6 +44,9 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
     public static final String ACTION_SEARCH_HANJI = "ACTION_SEARCH_HANJI";
     public static final String ACTION_SEARCH_HOAGI = "ACTION_SEARCH_HOAGI";
     public static final String ACTION_SEARCH_ALL = "ACTION_SEARCH_ALL";
+
+    public static final String EXTRA_SEARCH_LMJ_KEYWORD = "EXTRA_SEARCH_LMJ_KEYWORD";
+    public static final String EXTRA_SEARCH_HANJI_KEYWORD = "EXTRA_SEARCH_HANJI_KEYWORD";
 
     private static final int SEARCH_TYPE_LOMAJI = 0;
     private static final int SEARCH_TYPE_HANJI = 1;
@@ -82,32 +86,14 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         setContentView(R.layout.activity_tailo_search);
         ButterKnife.bind(this);
 
-        handleIntent();
-
         mRealm = Realm.getDefaultInstance();
 
         initRecyclerView();
         initRadioButton();
+
         initSearch();
-    }
 
-    private void handleIntent() {
-        // Get the intent, verify the action and get the query
-        Intent intent = getIntent();
-
-        if (ACTION_SEARCH_LMJ.equals(intent.getAction())) {
-            mCurrentSearchType = SEARCH_TYPE_LOMAJI;
-            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_lomaji) + ")");
-        } else if (ACTION_SEARCH_HANJI.equals(intent.getAction())) {
-            mCurrentSearchType = SEARCH_TYPE_HANJI;
-            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_hanji) + ")");
-        } else if (ACTION_SEARCH_HOAGI.equals(intent.getAction())) {
-            mCurrentSearchType = SEARCH_TYPE_HOAGI;
-            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_hoagi) + ")");
-        } else if (ACTION_SEARCH_ALL.equals(intent.getAction())) {
-            mCurrentSearchType = SEARCH_TYPE_ALL;
-            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_all) + ")");
-        }
+        handleIntent();
     }
 
     private void initRecyclerView() {
@@ -131,7 +117,21 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
 
     private void initSearch() {
         mSearchView.setIconifiedByDefault(false);
-        mSearchView.requestFocus();
+
+        Intent intent = getIntent();
+        if (ACTION_SEARCH_LMJ.equals(intent.getAction())) {
+            mCurrentSearchType = SEARCH_TYPE_LOMAJI;
+            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_lomaji) + ")");
+        } else if (ACTION_SEARCH_HANJI.equals(intent.getAction())) {
+            mCurrentSearchType = SEARCH_TYPE_HANJI;
+            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_hanji) + ")");
+        } else if (ACTION_SEARCH_HOAGI.equals(intent.getAction())) {
+            mCurrentSearchType = SEARCH_TYPE_HOAGI;
+            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_hoagi) + ")");
+        } else if (ACTION_SEARCH_ALL.equals(intent.getAction())) {
+            mCurrentSearchType = SEARCH_TYPE_ALL;
+            setTitle(getString(R.string.nav_dict_tailo) + " (" + getString(R.string.fragment_tailo_search_button_all) + ")");
+        }
 
         if (mCurrentSearchType == SEARCH_TYPE_LOMAJI) {
             mSearchView.setQueryHint(getString(R.string.search_lomaji_hint));
@@ -148,6 +148,32 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         }
 
         mSearchView.setOnQueryTextListener(this);
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+
+        if (ACTION_SEARCH_LMJ.equals(intent.getAction())) {
+            final String searchLmjKeyword = intent.getStringExtra(EXTRA_SEARCH_LMJ_KEYWORD);
+            if (!TextUtils.isEmpty(searchLmjKeyword)) {
+                mSearchView.setQuery(searchLmjKeyword, false);
+                doSearch(searchLmjKeyword);
+
+                hideImeOnCreate();
+            }
+        } else if (ACTION_SEARCH_HANJI.equals(intent.getAction())) {
+            final String searchHanjiKeyword = intent.getStringExtra(EXTRA_SEARCH_HANJI_KEYWORD);
+            if (!TextUtils.isEmpty(searchHanjiKeyword)) {
+                mSearchView.setQuery(searchHanjiKeyword, false);
+                doSearch(searchHanjiKeyword);
+
+                hideImeOnCreate();
+            }
+        }
+    }
+
+    public void hideImeOnCreate() {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
     private void doSearch() {

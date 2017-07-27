@@ -1,5 +1,6 @@
 package com.taccotap.taigidict.portal;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -16,11 +18,16 @@ import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.mikepenz.aboutlibraries.ui.LibsSupportFragment;
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.tailo.TailoDictFragment;
+import com.taccotap.taigidict.tailo.search.TailoSearchActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DictDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String ACTION_SEARCH_FROM_PHAHTAIGI = "com.taccotap.taigidict.search.from.phahtaigi";
+    private static final String EXTRA_TAILO_SEARCH_KEYWORD = "EXTRA_TAILO_SEARCH_KEYWORD";
+    private static final String EXTRA_TAILO_HANJI_SEARCH_KEYWORD = "EXTRA_TAILO_HANJI_SEARCH_KEYWORD";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -38,6 +45,36 @@ public class DictDrawerActivity extends AppCompatActivity implements NavigationV
         ButterKnife.bind(this);
 
         initUi();
+
+        checkPhahTaigiIntent();
+    }
+
+    private void checkPhahTaigiIntent() {
+        final Intent intent = getIntent();
+        if (intent != null) {
+            final String action = intent.getAction();
+            if (action != null && action.equals(ACTION_SEARCH_FROM_PHAHTAIGI)) {
+                setCurrentContentFragment(R.id.nav_dict_tailo);
+
+                final String tailoSearchKeyword = intent.getStringExtra(EXTRA_TAILO_SEARCH_KEYWORD);
+                if (!TextUtils.isEmpty(tailoSearchKeyword)) {
+                    Intent newIntent = new Intent(this, TailoSearchActivity.class);
+                    newIntent.setAction(TailoSearchActivity.ACTION_SEARCH_LMJ);
+                    newIntent.putExtra(TailoSearchActivity.EXTRA_SEARCH_LMJ_KEYWORD, tailoSearchKeyword);
+                    startActivity(newIntent);
+                    return;
+                }
+
+                final String tailoHanjiSearchKeyword = intent.getStringExtra(EXTRA_TAILO_HANJI_SEARCH_KEYWORD);
+                if (!TextUtils.isEmpty(tailoHanjiSearchKeyword)) {
+                    Intent newIntent = new Intent(this, TailoSearchActivity.class);
+                    newIntent.setAction(TailoSearchActivity.ACTION_SEARCH_HANJI);
+                    newIntent.putExtra(TailoSearchActivity.EXTRA_SEARCH_HANJI_KEYWORD, tailoHanjiSearchKeyword);
+                    startActivity(newIntent);
+                    return;
+                }
+            }
+        }
     }
 
     private void initUi() {

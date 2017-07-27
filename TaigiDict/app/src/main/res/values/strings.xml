@@ -9,7 +9,7 @@
     <string name="nav_about">關於</string>
     <string name="nav_licenses">授權資訊</string>
 
-    <string name="fragment_tailo_search_description1">若是欲用「羅馬字」來tshuē，會使輸入「臺羅」抑是「白話字」，聲調符號欲用「數字」抑是「羅馬字」攏會使。</string>
+    <string name="fragment_tailo_search_description1">若是欲用「羅馬字」來揣，會使輸入「臺羅」抑是「白話字」，聲調符號欲用「數字」抑是「羅馬字」攏會使。</string>
     <string name="fragment_tailo_search_description2">若是欲聽字詞按怎唸，愛上網才會使聽。</string>
     <string name="fragment_tailo_search_description3"><![CDATA[若無法度輸入臺語字，請安裝<a href="https://play.google.com/store/apps/details?id=com.taccotap.phahtaigi&hl=zh_TW">Phah Tâi-gí 臺語輸入法</a>。]]></string>
     <string name="fragment_tailo_search_method">請選一種揣--ê方式：</string>
@@ -50,7 +50,7 @@
     <string name="about_fragment_version_item_text">版本</string>
     <string name="about_fragment_author_card_title_text">作者</string>
     <string name="about_fragment_author_item_text">Hê-bí</string>
-    <string name="about_fragment_author_item_subtext">Tánn-káu, Tâi-oân</string>
+    <string name="about_fragment_author_item_subtext">Tánn-káu, Tâi-uân</string>
 
     <string name="navigation_drawer_open">navigation drawer open</string>
     <string name="navigation_drawer_close">navigation drawer close</string>

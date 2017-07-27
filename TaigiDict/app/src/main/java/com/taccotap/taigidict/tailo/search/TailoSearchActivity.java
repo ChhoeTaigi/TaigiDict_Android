@@ -20,12 +20,20 @@ import com.taccotap.taigidict.converter.PojToTailoConverter;
 import com.taccotap.taigidict.tailo.utils.TailoConstants;
 import com.taccotap.taigidict.tailo.word.TailoWordActivity;
 import com.taccotap.taigidict.utils.LomajiSearchUtils;
+import com.taccotap.taigidictmodel.tailo.TlTaigiQuery;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.functions.Consumer;
+import io.realm.Case;
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
+import io.realm.Sort;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class TailoSearchActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, CompoundButton.OnCheckedChangeListener {
@@ -61,7 +69,7 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
     private int mCurrentSearchType = SEARCH_TYPE_LOMAJI;
 
     private String mCurrentQueryString = TailoConstants.DEFAULT_QUERY_STRING;
-    private boolean mIsCurrentSearchEquals = false;
+    private boolean mIsCurrentSearchEquals = true;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -105,7 +113,7 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
     private void initRecyclerView() {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        mTailoSearchAdapter = new TailoSearchAdapter(this, mRealm);
+        mTailoSearchAdapter = new TailoSearchAdapter(this);
         mRecyclerView.setAdapter(mTailoSearchAdapter);
 
         mTailoSearchAdapter.getItemClickProcessor().subscribe(new Consumer<Integer>() {
@@ -158,16 +166,113 @@ public class TailoSearchActivity extends AppCompatActivity implements SearchView
         }
 
         if (mCurrentSearchType == SEARCH_TYPE_LOMAJI) {
-            mTailoSearchAdapter.searchLomaji(query, isSearchEquals);
+            searchLomaji(query, isSearchEquals);
         } else if (mCurrentSearchType == SEARCH_TYPE_HANJI) {
-            mTailoSearchAdapter.searchHanji(query, isSearchEquals);
+            searchHanji(query, isSearchEquals);
         } else if (mCurrentSearchType == SEARCH_TYPE_HOAGI) {
-            mTailoSearchAdapter.searchHoagi(query, isSearchEquals);
+            searchHoagi(query, isSearchEquals);
         } else if (mCurrentSearchType == SEARCH_TYPE_ALL) {
-            mTailoSearchAdapter.searchAll(query);
+            searchAll(query);
         }
 
         mRecyclerView.scrollToPosition(0);
+    }
+
+    public void searchLomaji(String lomaji, boolean isSearchEquals) {
+        final RealmResults<TlTaigiQuery> realmResults;
+
+        RealmQuery<TlTaigiQuery> where = mRealm.where(TlTaigiQuery.class);
+        if (!isSearchEquals) {
+            where = where.contains("queryWord", lomaji, Case.INSENSITIVE);
+        } else {
+            where = where.equalTo("queryWord", lomaji, Case.INSENSITIVE);
+        }
+
+        realmResults = where.findAllAsync();
+
+        realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiQuery>>() {
+            @Override
+            public void onChange(RealmResults<TlTaigiQuery> element) {
+                updateTaigiQueryData(element);
+            }
+        });
+    }
+
+    public void searchHanji(String hanji, boolean isSearchEquals) {
+        final RealmResults<TlTaigiWord> realmResults;
+
+        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
+        if (!isSearchEquals) {
+            where = where.contains("hanji", hanji, Case.INSENSITIVE);
+        } else {
+            where = where.equalTo("hanji", hanji, Case.INSENSITIVE);
+        }
+
+        realmResults = where.findAllSortedAsync("mainCode", Sort.ASCENDING);
+
+        realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiWord>>() {
+            @Override
+            public void onChange(RealmResults<TlTaigiWord> element) {
+                updateTaigiWordData(element);
+            }
+        });
+    }
+
+    public void searchHoagi(String hoagi, boolean isSearchEquals) {
+        final RealmResults<TlTaigiWord> realmResults;
+        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
+        if (!isSearchEquals) {
+            where = where.contains("hoagiWords.hoagiWord", hoagi);
+        } else {
+            where = where.equalTo("hoagiWords.hoagiWord", hoagi);
+        }
+
+        realmResults = where.findAllSortedAsync("mainCode", Sort.ASCENDING);
+
+        realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiWord>>() {
+            @Override
+            public void onChange(RealmResults<TlTaigiWord> element) {
+                updateTaigiWordData(element);
+            }
+        });
+    }
+
+    public void searchAll(String query) {
+        final RealmResults<TlTaigiWord> realmResults;
+        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
+
+        where = where.contains("lomaji", query, Case.INSENSITIVE)
+                .or().contains("hanji", query, Case.INSENSITIVE)
+                .or().contains("hoagiWords.hoagiWord", query)
+                .or().contains("descriptions.description", query)
+                .or().contains("descriptions.exampleSentences.exampleSentenceHanji", query)
+                .or().contains("descriptions.exampleSentences.exampleSentenceLomaji", query)
+                .or().contains("descriptions.exampleSentences.exampleSentenceHoagi", query);
+
+        realmResults = where.findAllSortedAsync("mainCode", Sort.ASCENDING);
+
+        realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiWord>>() {
+            @Override
+            public void onChange(RealmResults<TlTaigiWord> element) {
+                updateTaigiWordData(element);
+            }
+        });
+    }
+
+    private void updateTaigiWordData(RealmResults<TlTaigiWord> realmResults) {
+        final ArrayList<TlTaigiWord> taigiWords = new ArrayList<>(mRealm.copyFromRealm(realmResults));
+        mTailoSearchAdapter.setTaigiWords(taigiWords);
+    }
+
+    private void updateTaigiQueryData(RealmResults<TlTaigiQuery> realmResults) {
+        ArrayList<TlTaigiQuery> taigiQueries = new ArrayList<>(mRealm.copyFromRealm(realmResults));
+
+        ArrayList<TlTaigiWord> taigiWords = new ArrayList<>();
+        for (TlTaigiQuery taigiQuery : taigiQueries) {
+            taigiWords.add(taigiQuery.getTaigiWord());
+        }
+
+        mTailoSearchAdapter.setTaigiWords(taigiWords);
     }
 
     private void onItemClick(int position) {

@@ -11,7 +11,7 @@
         臺灣閩南語常用詞辭典及相關資料皆為教育部國語推行委員會編訂，所含相關資料之所有權歸教育部所有。<br><br>
         本辭典之「文字內容」部分以 創用CC姓名標示-禁止改作 3.0 臺灣 授權條款釋出。]]></string>
     <string name="library_tailodict_libraryWebsite">http://twblg.dict.edu.tw/holodict_new/index.html</string>
-    <string name="library_tailodict_libraryVersion">20160602</string>
+    <string name="library_tailodict_libraryVersion">20170505</string>
     <!-- OpenSource section -->
     <string name="library_tailodict_isOpenSource">false</string>
     <string name="library_tailodict_repositoryLink">http://twblg.dict.edu.tw/holodict_new/index.html</string>

@@ -26,6 +26,8 @@ public class TlTaigiWord extends RealmObject {
 
     private RealmList<TlHoagiWord> hoagiWords;
 
+    private TlAnotherPronounce anotherPronounce;
+
     public int getMainCode() {
         return mainCode;
     }
@@ -80,5 +82,13 @@ public class TlTaigiWord extends RealmObject {
 
     public void setHoagiWords(RealmList<TlHoagiWord> hoagiWords) {
         this.hoagiWords = hoagiWords;
+    }
+
+    public TlAnotherPronounce getAnotherPronounce() {
+        return anotherPronounce;
+    }
+
+    public void setAnotherPronounce(TlAnotherPronounce anotherPronounce) {
+        this.anotherPronounce = anotherPronounce;
     }
 }

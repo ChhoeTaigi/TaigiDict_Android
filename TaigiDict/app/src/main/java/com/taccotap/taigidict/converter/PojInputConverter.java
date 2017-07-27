@@ -19,7 +19,7 @@ public class PojInputConverter {
         StringBuilder stringBuilder = new StringBuilder();
         final String[] words = input.split("[ -]");
         for (String foundTaigiWord : words) {
-            String pojNumber = LomajiConverter.convertToNumberTone(foundTaigiWord, LomajiConverter.LOMAJI_TYPE_POJ);
+            String pojNumber = LomajiConverter.convertLomajiWordToNumberTone(foundTaigiWord, LomajiConverter.LOMAJI_TYPE_POJ);
             if (BuildConfig.DEBUG_LOG) {
                 Log.d(TAG, "foundTaigiWord=" + foundTaigiWord + ", pojNumber=" + pojNumber);
             }

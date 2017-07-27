@@ -3,34 +3,32 @@ package com.taccotap.taigidict.tailo.search;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.taccotap.taigidict.R;
 import com.taccotap.taigidict.databinding.ListitemTailoSearchBinding;
-import com.taccotap.taigidict.tailo.utils.TailoConstants;
 import com.taccotap.taigidict.tailo.utils.TailoDictHelper;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 
-import io.reactivex.processors.PublishProcessor;
-import io.realm.Case;
-import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmQuery;
-import io.realm.RealmRecyclerViewAdapter;
-import io.realm.RealmResults;
-import io.realm.RealmViewHolder;
-import io.realm.Sort;
+import java.util.ArrayList;
 
-public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, TailoSearchAdapter.TailoSearchViewHolder> {
+import io.reactivex.processors.PublishProcessor;
+
+public class TailoSearchAdapter extends RecyclerView.Adapter<TailoSearchAdapter.TailoSearchViewHolder> {
     private static final String TAG = TailoSearchAdapter.class.getSimpleName();
 
-    private final Realm mRealm;
+    private final Context mContext;
+
+    private ArrayList<TlTaigiWord> mTaigiWords = new ArrayList<>();
 
     private final PublishProcessor<Integer> mOnClickSubject = PublishProcessor.create();
+    private LayoutInflater mLayoutInflater;
 
-    public class TailoSearchViewHolder extends RealmViewHolder {
+    public class TailoSearchViewHolder extends RecyclerView.ViewHolder {
         public final ListitemTailoSearchBinding dataBinding;
         public TextView titleTextView1;
         public TextView titleContentTextView1;
@@ -47,9 +45,21 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
         }
     }
 
-    public TailoSearchAdapter(Context context, Realm realm) {
-        super(context, realm.where(TlTaigiWord.class).contains("lomaji", TailoConstants.DEFAULT_QUERY_STRING).findAllAsync(), false);
-        mRealm = realm;
+    public TailoSearchAdapter(Context context) {
+        mContext = context;
+        mLayoutInflater = LayoutInflater.from(mContext);
+    }
+
+    public void setTaigiWords(ArrayList<TlTaigiWord> taigiWords) {
+        mTaigiWords.clear();
+        mTaigiWords.addAll(taigiWords);
+
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemCount() {
+        return mTaigiWords.size();
     }
 
     public PublishProcessor<Integer> getItemClickProcessor() {
@@ -58,13 +68,13 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
 
     @Override
     public TailoSearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final ListitemTailoSearchBinding dataBinding = DataBindingUtil.inflate(inflater, R.layout.listitem_tailo_search, parent, false);
+        final ListitemTailoSearchBinding dataBinding = DataBindingUtil.inflate(mLayoutInflater, R.layout.listitem_tailo_search, parent, false);
 
         final TailoSearchViewHolder viewHolder = new TailoSearchViewHolder(dataBinding);
 
-        Typeface lomajiTypeface = Typeface.createFromAsset(viewHolder.itemView.getContext().getAssets(), "fonts/twu3.ttf");
+        Typeface lomajiTypeface = Typeface.createFromAsset(viewHolder.itemView.getContext().getAssets(), "fonts/twsong.ttf");
         viewHolder.titleContentTextView1.setTypeface(lomajiTypeface);
-        Typeface hanjiTypeface = Typeface.createFromAsset(viewHolder.itemView.getContext().getAssets(), "fonts/mingliub.ttc");
+        Typeface hanjiTypeface = Typeface.createFromAsset(viewHolder.itemView.getContext().getAssets(), "fonts/twsong.ttf");
         viewHolder.titleContentTextView2.setTypeface(hanjiTypeface);
 
         return viewHolder;
@@ -72,7 +82,7 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
 
     @Override
     public void onBindViewHolder(TailoSearchViewHolder viewHolder, final int position) {
-        TlTaigiWord tlTaigiWord = getData().get(position);
+        TlTaigiWord tlTaigiWord = getItem(position);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,92 +104,17 @@ public class TailoSearchAdapter extends RealmRecyclerViewAdapter<TlTaigiWord, Ta
 
             viewHolder.dataBinding.setTaigiWord(tlTaigiWord);
             viewHolder.dataBinding.executePendingBindings();
+
+            if (tlTaigiWord.getAnotherPronounce() != null) {
+                final String anotherPronounceLomaji = tlTaigiWord.getAnotherPronounce().getAnotherPronounceLomaji();
+                viewHolder.titleContentTextView1.setText(viewHolder.titleContentTextView1.getText() + ", " + anotherPronounceLomaji);
+            }
         }
     }
 
     public TlTaigiWord getItem(int position) {
-        return this.getData().get(position);
+        return mTaigiWords.get(position);
     }
 
 
-    public void searchLomaji(String lomaji, boolean isSearchEquals) {
-        final RealmResults<TlTaigiWord> realmResults;
-
-        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
-        if (!isSearchEquals) {
-            where = where.contains("lomaji", lomaji, Case.INSENSITIVE);
-        } else {
-            where = where.equalTo("lomaji", lomaji, Case.INSENSITIVE);
-        }
-
-        realmResults = where.findAllSortedAsync("mainCode", Sort.ASCENDING);
-
-        realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiWord>>() {
-            @Override
-            public void onChange(RealmResults<TlTaigiWord> element) {
-                updateData(realmResults);
-            }
-        });
-    }
-
-    public void searchHanji(String hanji, boolean isSearchEquals) {
-        final RealmResults<TlTaigiWord> realmResults;
-
-        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
-        if (!isSearchEquals) {
-            where = where.contains("hanji", hanji, Case.INSENSITIVE);
-        } else {
-            where = where.equalTo("hanji", hanji, Case.INSENSITIVE);
-        }
-
-        realmResults = where.findAllSortedAsync("mainCode", Sort.ASCENDING);
-
-        realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiWord>>() {
-            @Override
-            public void onChange(RealmResults<TlTaigiWord> element) {
-                updateData(realmResults);
-            }
-        });
-    }
-
-    public void searchHoagi(String hoagi, boolean isSearchEquals) {
-        final RealmResults<TlTaigiWord> realmResults;
-        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
-        if (!isSearchEquals) {
-            where = where.contains("hoagiWords.hoagiWord", hoagi);
-        } else {
-            where = where.equalTo("hoagiWords.hoagiWord", hoagi);
-        }
-
-        realmResults = where.findAllSortedAsync("mainCode", Sort.ASCENDING);
-
-        realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiWord>>() {
-            @Override
-            public void onChange(RealmResults<TlTaigiWord> element) {
-                updateData(realmResults);
-            }
-        });
-    }
-
-    public void searchAll(String query) {
-        final RealmResults<TlTaigiWord> realmResults;
-        RealmQuery<TlTaigiWord> where = mRealm.where(TlTaigiWord.class);
-
-        where = where.contains("lomaji", query, Case.INSENSITIVE)
-                .or().contains("hanji", query, Case.INSENSITIVE)
-                .or().contains("hoagiWords.hoagiWord", query)
-                .or().contains("descriptions.description", query)
-                .or().contains("descriptions.exampleSentences.exampleSentenceHanji", query)
-                .or().contains("descriptions.exampleSentences.exampleSentenceLomaji", query)
-                .or().contains("descriptions.exampleSentences.exampleSentenceHoagi", query);
-
-        realmResults = where.findAllSortedAsync("mainCode", Sort.ASCENDING);
-
-        realmResults.addChangeListener(new RealmChangeListener<RealmResults<TlTaigiWord>>() {
-            @Override
-            public void onChange(RealmResults<TlTaigiWord> element) {
-                updateData(realmResults);
-            }
-        });
-    }
 }

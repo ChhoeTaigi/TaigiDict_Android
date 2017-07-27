@@ -83,7 +83,7 @@ dependencies {
 
     // Realm
     compile 'com.github.eggheadgames:android-realm-asset-helper:2.0.0'
-    compile 'io.realm:android-adapters:1.4.0'
+    compile 'io.realm:android-adapters:2.1.0'
     compile 'com.github.thorbenprimke:realm-searchview:0.9.6'
 
     // Binding

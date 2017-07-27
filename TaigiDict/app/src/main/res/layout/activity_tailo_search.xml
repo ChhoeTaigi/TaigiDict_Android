@@ -47,10 +47,10 @@
                 android:id="@+id/searchContainsRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="false"
                 android:text="@string/tailo_search_contains_radiobutton_text"
                 android:textColor="@color/colorAccent"
-                android:textSize="19sp"/>
+                android:textSize="18sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -63,10 +63,10 @@
                 android:id="@+id/searchEqualRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false"
+                android:checked="true"
                 android:text="@string/tailo_search_equals_radiobutton_text"
                 android:textColor="@color/colorAccent"
-                android:textSize="19sp"/>
+                android:textSize="18sp"/>
         </LinearLayout>
 
     </RadioGroup>

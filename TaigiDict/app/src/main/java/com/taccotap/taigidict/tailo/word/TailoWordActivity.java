@@ -92,10 +92,10 @@ public class TailoWordActivity extends AppCompatActivity {
     }
 
     private void setFonts() {
-        Typeface lomajiTypeface = Typeface.createFromAsset(getAssets(), "fonts/twu3.ttf");
+        Typeface lomajiTypeface = Typeface.createFromAsset(getAssets(), "fonts/twsong.ttf");
         mTitleContentTextView1.setTypeface(lomajiTypeface);
 
-        Typeface hanjiTypeface = Typeface.createFromAsset(getAssets(), "fonts/mingliub.ttc");
+        Typeface hanjiTypeface = Typeface.createFromAsset(getAssets(), "fonts/twsong.ttf");
         mTitleContentTextView2.setTypeface(hanjiTypeface);
         mDescriptionTextView.setTypeface(hanjiTypeface);
         mWordPropertyTextView.setTypeface(hanjiTypeface);
@@ -142,6 +142,13 @@ public class TailoWordActivity extends AppCompatActivity {
                     // bind word
                     mBinding.setTaigiWord(mTaigiWord);
 
+                    if (mTaigiWord.getAnotherPronounce() != null) {
+                        final String anotherPronounceLomaji = mTaigiWord.getAnotherPronounce().getAnotherPronounceLomaji();
+                        mTitleContentTextView1.setText(mTaigiWord.getLomaji() + ", " + anotherPronounceLomaji);
+                    } else {
+                        mTitleContentTextView1.setText(mTaigiWord.getLomaji());
+                    }
+
                     // bind audio link
                     mVoiceUrl = TailoTaigiWordAudioUrlHelper.getTaigiAudioUrl(mMainCode);
                 }
@@ -157,6 +164,7 @@ public class TailoWordActivity extends AppCompatActivity {
                 if (descriptionsCount > 0) {
                     final String description = TailoDictHelper.getCombinatedDescription(mTaigiWord);
                     mDescriptionTextView.setText(description);
+                    mDescriptionLayout.setVisibility(View.VISIBLE);
                 } else {
                     mDescriptionLayout.setVisibility(View.GONE);
                 }

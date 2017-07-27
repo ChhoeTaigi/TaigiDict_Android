@@ -12,6 +12,7 @@ import com.taccotap.taigidictmodel.tailo.TlDescription;
 import com.taccotap.taigidictmodel.tailo.TlDescriptionPartOfSpeech;
 import com.taccotap.taigidictmodel.tailo.TlExampleSentence;
 import com.taccotap.taigidictmodel.tailo.TlHoagiWord;
+import com.taccotap.taigidictmodel.tailo.TlTaigiQuery;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWord;
 import com.taccotap.taigidictmodel.tailo.TlTaigiWordProperty;
 import com.taccotap.taigidictmodel.tailo.TlThesaurus;
@@ -71,6 +72,8 @@ public class TlParseIntentService extends IntentService {
         parseExampleSentence();
 
         parseAnotherPronounce();
+
+        parseTaigiQuery();
 
         parseThesaurus();
         parseAnyonym();
@@ -229,6 +232,7 @@ public class TlParseIntentService extends IntentService {
             Iterator rowIterator = firstSheet.rowIterator();
             final ArrayList<TlHoagiWord> hoagiWords = new ArrayList<>();
 
+            int hoagiCode = 2;
             int rowNum = 1;
             while (rowIterator.hasNext()) {
                 HSSFRow currentRow = (HSSFRow) rowIterator.next();
@@ -256,6 +260,9 @@ public class TlParseIntentService extends IntentService {
 
                     colNum++;
                 }
+
+                currentHoagiWord.setHoagiCode(hoagiCode);
+                hoagiCode++;
 
                 hoagiWords.add(currentHoagiWord);
 
@@ -518,9 +525,90 @@ public class TlParseIntentService extends IntentService {
                 }
             });
 
+            // add to TaigiWord
+            final RealmResults<TlTaigiWord> taigiWords = mRealm.where(TlTaigiWord.class).findAll();
+            final SparseArray<TlTaigiWord> taigiWordSparseArray = new SparseArray<>();
+            for (final TlTaigiWord taigiWord : taigiWords) {
+                taigiWordSparseArray.put(taigiWord.getMainCode(), taigiWord);
+            }
+            mRealm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    for (final TlAnotherPronounce anotherPronounce : anotherPronounces) {
+                        final int mainCode = anotherPronounce.getMainCode();
+                        final TlTaigiWord foundTaigiWord = taigiWordSparseArray.get(mainCode);
+                        if (foundTaigiWord == null) {
+                            Log.e(TAG, "TlTaigiWord for TlAnotherPronounce's maincode = " + mainCode + " not found.");
+                            continue;
+                        }
+                        foundTaigiWord.setAnotherPronounce(mRealm.copyToRealmOrUpdate(anotherPronounce));
+                    }
+                }
+            });
+
         }
 
         Log.d(TAG, "finish: parseAnotherPronounce()");
+    }
+
+    private void parseTaigiQuery() {
+        final RealmResults<TlTaigiWord> taigiWords = mRealm.where(TlTaigiWord.class).findAll();
+
+        final ArrayList<TlTaigiQuery> taigiQueries = new ArrayList<>();
+
+        for (TlTaigiWord taigiWord : taigiWords) {
+            final String taigiWordLomaji = taigiWord.getLomaji();
+            if (taigiWordLomaji.contains("/")) {
+                Log.d(TAG, "lomaji need split: " + taigiWordLomaji);
+
+                final String[] splitStrings = taigiWordLomaji.split("/");
+                for (String lomaji : splitStrings) {
+                    TlTaigiQuery taigiQuery = new TlTaigiQuery();
+                    taigiQuery.setQueryWord(lomaji);
+                    taigiQuery.setTaigiWord(taigiWord);
+
+                    taigiQueries.add(taigiQuery);
+                }
+            } else {
+                TlTaigiQuery taigiQuery = new TlTaigiQuery();
+                taigiQuery.setQueryWord(taigiWordLomaji);
+                taigiQuery.setTaigiWord(taigiWord);
+
+                taigiQueries.add(taigiQuery);
+            }
+
+            final TlAnotherPronounce anotherPronounce = taigiWord.getAnotherPronounce();
+            if (anotherPronounce != null) {
+                final String anotherPronounceLomaji = anotherPronounce.getAnotherPronounceLomaji();
+                if (anotherPronounceLomaji.contains("/")) {
+                    Log.d(TAG, "anotherPronounce need split: " + anotherPronounceLomaji);
+
+                    final String[] splitStrings = anotherPronounceLomaji.split("/");
+                    for (String lomaji : splitStrings) {
+                        TlTaigiQuery taigiQuery = new TlTaigiQuery();
+                        taigiQuery.setQueryWord(lomaji);
+                        taigiQuery.setTaigiWord(taigiWord);
+
+                        taigiQueries.add(taigiQuery);
+                    }
+                } else {
+                    TlTaigiQuery taigiQuery = new TlTaigiQuery();
+                    taigiQuery.setQueryWord(anotherPronounceLomaji);
+                    taigiQuery.setTaigiWord(taigiWord);
+
+                    taigiQueries.add(taigiQuery);
+                }
+            }
+        }
+
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                for (TlTaigiQuery taigiQuery : taigiQueries) {
+                    realm.copyToRealm(taigiQuery);
+                }
+            }
+        });
     }
 
     private void parseExampleSentence() {

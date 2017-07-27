@@ -78,7 +78,6 @@
                         android:layout_margin="5dp"
                         android:layout_marginLeft="15dp"
                         android:lineSpacingMultiplier="1.3"
-                        android:text="@{taigiWord.lomaji}"
                         android:textColor="#feee"
                         android:textSize="30sp"/>
                 </LinearLayout>
@@ -159,7 +158,6 @@
                                 android:layout_margin="3dp"
                                 android:layout_marginLeft="10dp"
                                 android:lineSpacingMultiplier="1.3"
-                                android:text="@{description.description}"
                                 android:textColor="#f222"
                                 android:textSize="20sp"/>
                         </LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="define_twsongfont"></string>
+    <!-- Author section -->
+    <string name="library_twsongfont_author">烏衣行</string>
+    <string name="library_twsongfont_authorWebsite">http://www.tinyurl.com/twfonts</string>
+    <!-- Library section -->
+    <string name="library_twsongfont_libraryName">台灣宋體</string>
+    <string name="library_twsongfont_libraryDescription">台灣宋體使用教育部標準字體宋體字型所編輯而成，保留原有教育部標準字體的漢字編碼及外觀，並由烏衣行再擴充閩客語漢字、原住民特殊符號，以及其他符號。
+本字型檔可提供使用者自由使用，但使用者必須完全符合以下條件，始能自由使用台灣宋體：
+1.非商業使用，若出版品須使用上述，請先徵詢同意，並註明來源。
+2.禁止修改或重製本字型。
+3.標示作者 (烏衣行) 與來源 (www.wesingkasu.blogspot.tw 或 www.tinyurl.com/twfonts)。
+4.保留授權聲明文件。
+台灣宋體字型檔之著作權除教育部標準字型原有漢字部分屬教育部所有外，其餘符號、閩客語新增漢字等皆為本人所有，本人保有所擴增部分之所有權利。</string>
+    <string name="library_twsongfont_libraryWebsite">http://www.tinyurl.com/twfonts</string>
+    <string name="library_twsongfont_libraryVersion">20140401</string>
+    <!-- OpenSource section -->
+    <string name="library_twsongfont_isOpenSource">false</string>
+    <string name="library_twsongfont_repositoryLink">http://www.tinyurl.com/twfonts</string>
+    <!-- ClassPath for autoDetect section -->
+    <string name="library_twsongfont_classPath">com.taccotap.taigidictmodel.tailo</string>
+    <!-- License section -->
+    <!--<string name="library_twsongfont_licenseVersion">CC BY-ND 3.0 TW</string>-->
+    <!--<string name="library_twsongfont_licenseLink">https://creativecommons.org/licenses/by-nd/3.0/tw/</string>-->
+    <!--<string name="library_twsongfont_licenseContent">姓名標示-禁止改作 3.0 台灣</string>-->
+    <!-- Custom variables section -->
+</resources>

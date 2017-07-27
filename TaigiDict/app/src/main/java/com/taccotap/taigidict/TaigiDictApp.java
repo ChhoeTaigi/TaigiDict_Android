@@ -43,7 +43,7 @@ public class TaigiDictApp extends Application {
 
     private void initCalligraphy() {
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/twu3.ttf")
+                .setDefaultFontPath("fonts/twsong.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build());
     }
